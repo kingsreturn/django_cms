@@ -97,7 +97,7 @@ DATABASES = {
     }
 }
 '''
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -107,7 +107,16 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django_cms',
+        'USER': 'mysql',
+        'PASSWORD': '123456',
+        'HOST': 'localhost'
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
