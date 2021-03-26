@@ -1,12 +1,8 @@
 import dash_core_components as dcc
-import time
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
-import plotly.express as px
 from django_plotly_dash import DjangoDash
-from home.dash_apps.finished_apps import opc as op
-
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 

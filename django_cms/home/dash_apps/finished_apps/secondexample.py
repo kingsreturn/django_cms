@@ -1,34 +1,56 @@
 import dash_core_components as dcc
-import time
 import datetime
-import dash
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly
-import plotly.graph_objs as go
-import plotly.express as px
+import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+#import dash
 
-from home.dash_apps.finished_apps import opc as op
-#import opc as op
+#from django_cms.home.dash_apps.finished_apps.Datenerfassung import opc as op
+from home.dash_apps.finished_apps.Datenerfassung import CollectData as collect
+from home.dash_apps.finished_apps.Datenvorverarbeitung import Datenprocessing as process
+
+#import Datenerfassung.CollectData as collect
 #from pyorbital.orbital import Orbital
 
 nodeDo = "ns=2;s=Demo.Dynamic.Scalar.Double"
 nodeFl = "ns=2;s=Demo.Dynamic.Scalar.Float"
 nodeIn = "ns=2;s=Demo.Dynamic.Scalar.Int32"
-ServerName = 'opc.tcp://localhost:48010'
-opcObject = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeDo)
+Server = 'opc.tcp://localhost:48010'
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash('SecondExample', external_stylesheets=external_stylesheets)
 #app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
 
+data = {
+    'time': [],
+    'Drehmoment': [],
+    'Position': [],
+    'Kraft': []
+}
+
 #satellite = Orbital('TERRA')
 num = 0
 app.layout = html.Div(
     html.Div([
-        html.H1('Condition Monitoring'),
+        dcc.Dropdown(
+            id='ProtocolType',
+            #style={'columnCount': 2}
+            options=[
+                {'label': 'OPC UA', 'value': 'opc'},
+                {'label': 'MQTT', 'value': 'mqtt'},
+                {'label': 'REST', 'value': 'rest'}
+            ],
+            value='opc'
+        ),
+        dcc.Input(id="server", type="text", placeholder="Server",value="opc.tcp://localhost:48010",style = {'padding': '5px', 'fontSize': '16px'}),
+        dcc.Input(id="address1", type="text", placeholder="Address",value="ns=2;s=Demo.Dynamic.Scalar.Double",debounce=True),
+        dcc.Input(id="address2", type="text", placeholder="Address",value="ns=2;s=Demo.Dynamic.Scalar.Float",debounce=True),
+        html.Button('Update', id='submit-val', n_clicks=0),
         html.Div(id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
@@ -41,15 +63,20 @@ app.layout = html.Div(
     ])
 )
 
-#@app.callback(Output('live-update-text', 'children'),
-#              Input('interval-component', 'n_intervals'))
+
 @app.callback(Output('live-update-text', 'children'),
-              [Input('interval-component', 'n_intervals')])
-def update_metrics(n):
-    #lon, lat, alt = satellite.get_lonlatalt(datetime.datetime.now())
-    lon = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeDo)
-    lat = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeFl)
-    alt = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeIn)
+              [Input('ProtocolType', 'value'),
+               Input('server', 'value'),
+               Input('address1', 'value'),
+               Input('address2', 'value'),
+               Input('interval-component', 'n_intervals')])
+def update_metrics(protocol,server,address1,address2,n):
+    Doubledata = collect.SensorData(protocol, server, address1)
+    Floatdata = collect.SensorData(protocol, server, address2)
+    Intdata = collect.SensorData(protocol, Server, nodeDo)
+    lon = Doubledata.getData()
+    lat = Floatdata.getData()
+    alt = Intdata.getData()
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
         html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),
@@ -59,62 +86,70 @@ def update_metrics(n):
 
 
 # Multiple components can update everytime interval gets fired.
-#@app.callback(Output('live-update-graph', 'figure'),
-#              Input('interval-component', 'n_intervals'))
 @app.callback(Output('live-update-graph', 'figure'),
-              [Input('interval-component', 'n_intervals')])
-def update_graph_live(n):
-    #satellite = Orbital('TERRA')
-    data = {
-        'time': [],
-        'Drehmoment': [],
-        'Position': [],
-        'Kraft': []
-    }
+              [Input('ProtocolType', 'value'),
+               Input('interval-component', 'n_intervals')])
+def update_graph_live(protocol,n):
+    # Collect data
+    Doubledata = collect.SensorData(protocol, Server, nodeDo)
+    Floatdata = collect.SensorData(protocol, Server, nodeFl)
 
-    # Collect some data
-    #for i in range(180):
-    time = datetime.datetime.now() - datetime.timedelta(seconds=2000)
-    lon = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeDo)
-    lat = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeFl)
-    alt = op.GetDataFromOpcServer(ServerName=ServerName, NodeID=nodeIn)
+    #Intdata = collect.SensorData(protocol, Server, nodeDo)
+
+    lon = Doubledata.getData()
+    lat = Floatdata.getData()
+    #alt = Intdata.getData()
 
     data['Drehmoment'].append(lon)
     data['Position'].append(lat)
-    data['Kraft'].append(alt)
-    data['time'].append(time)
+    data['time'].append(n)
+    average = process.Datenprocessing(data['Drehmoment'],data['Position'])
+    data['Kraft'] = average.Average(average.CombineData())
 
     # Create the graph with subplots
-    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.2)
-    fig['layout']['margin'] = {
-        'l': 30, 'r': 10, 'b': 30, 't': 10
-    }
+    fig = make_subplots(
+        rows=3, cols=1,
+        shared_xaxes=False,
+        vertical_spacing=0.03,
+        specs=[[{"type": "scatter"}],
+               [{"type": "scatter"}],
+               [{"type": "scatter"}]]
+    )
+
     fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
 
-    fig.append_trace({
-        'x': data['time'],
-        'y': data['Drehmoment'],
-        'name': 'Kraft',
-        'mode': 'lines+markers',
-        'type': 'scatter'
-    }, 1, 1)
-    fig.append_trace({
-        'x': data['time'],
-        'y': data['Position'],
-        #'text': data['time'],
-        'name': 'Position',
-        'mode': 'lines+markers',
-        'type': 'scatter'
-    }, 2, 1)
-    fig.append_trace({
-        'x': data['time'],
-        'y': data['Kraft'],
-        #'text': data['time'],
-        'name': 'Drehmoment',
-        'mode': 'lines+markers',
-        'type': 'scatter'
-    }, 3, 1)
-
+    fig.add_trace(
+        go.Scatter(
+            x=data['time'],
+            y=data['Drehmoment'],
+            mode="lines",
+            name="Drehmoment"
+        ),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=data['time'],
+            y=data['Position'],
+            mode="lines",
+            name="Position"
+        ),
+        row=2, col=1
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=data['time'],
+            y=data['Kraft'],
+            mode="lines",
+            name="Kraft"
+        ),
+        row=3, col=1
+    )
+    fig.update_layout(
+        height=800,
+        showlegend=False,
+        title_text="aktuelle Wert nach der Zeit",
+    )
     return fig
 
 if __name__ == '__main__':

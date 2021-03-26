@@ -13,11 +13,9 @@ click==7.1.2
 constantly==15.1.0
 cryptography==3.4.6
 daphne==3.0.1
-dash==1.19.0
 dash-core-components==1.0.0
 dash-daq==0.1.7
 dash-html-components==1.0.0
-dash-renderer==1.0.0
 dash-table==4.11.2
 distlib==0.3.1
 Django==3.1.7
