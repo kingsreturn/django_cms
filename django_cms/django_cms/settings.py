@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'channels',
     'channels_redis',
     'rest_framework',
+    'users',
+    'captcha',
 ]
 
 MIDDLEWARE = [
