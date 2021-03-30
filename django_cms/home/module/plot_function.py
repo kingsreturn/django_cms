@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 def plot1d():
     x_data = np.arange(0, 120, 0.1)
+    #print(x_data)
     trace1 = go.Scatter(
         x=x_data,
         y=np.sin(x_data)
@@ -282,7 +283,7 @@ def plot3D_scatter():
     x, y, z = np.random.rand(3,100)
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    data_file = os.path.join(current_dir,'module', 'cat.csv')
+    data_file = os.path.join(current_dir, '', 'cat.csv')
     csv = np.genfromtxt(data_file, delimiter=None,  comments='#')
     cat_x = csv[:, 0]
     cat_y = csv[:, 1]
@@ -319,3 +320,7 @@ def plot3D_scatter():
     fig = go.Figure(data=data, layout=layout)
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
+
+
+if __name__ == "__main__":
+    plot1d()
