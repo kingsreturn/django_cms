@@ -4,11 +4,10 @@ from django.db import models
 from django.db import models
 
 class User(models.Model):
-    '''用户表'''
-
+    # user information model
     gender = (
-        ('male','男'),
-        ('female','女'),
+        ('male','male'),
+        ('female','female'),
     )
 
     name = models.CharField(max_length=128,unique=True)
@@ -22,5 +21,5 @@ class User(models.Model):
 
     class Meta:
         ordering = ['c_time']
-        verbose_name = '用户'
-        verbose_name_plural = '用户'
+        verbose_name = 'user'
+        verbose_name_plural = 'user'
