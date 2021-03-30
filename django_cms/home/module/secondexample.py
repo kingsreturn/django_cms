@@ -2,7 +2,6 @@ import dash_core_components as dcc
 import datetime
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly
 import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
@@ -10,8 +9,8 @@ import plotly.graph_objects as go
 #import dash
 
 #from django_cms.home.dash_apps.finished_apps.Datenerfassung import opc as op
-from home.dash_apps.finished_apps.Datenerfassung import CollectData as collect
-from home.dash_apps.finished_apps.Datenvorverarbeitung import Datenprocessing as process
+from home.module.Datenerfassung import CollectData as collect
+from home.module.Datenvorverarbeitung import Datenprocessing as process
 
 #import Datenerfassung.CollectData as collect
 #from pyorbital.orbital import Orbital

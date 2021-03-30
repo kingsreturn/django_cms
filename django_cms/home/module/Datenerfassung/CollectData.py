@@ -2,6 +2,7 @@
 import _thread
 import time
 from opcua import Client
+#from . import models
 
 class SensorData:
     def __init__(self, protocol="opc", server ='',address=''):
@@ -13,7 +14,7 @@ class SensorData:
         self.data = []
 
     def StoreData(self):
-        #store data to Database
+        # todo : store data to Database
         pass
 
     def getData(self):
@@ -24,6 +25,7 @@ class SensorData:
             return Opc.GetData(self.server,self.address)
 
     # Constantly read Data into Dataset, return the Dataset when the function is called
+
     def ConstantlyReadData(self):
         _thread.start_new_thread(self.DataSampling(self.data,1))
         return self.data

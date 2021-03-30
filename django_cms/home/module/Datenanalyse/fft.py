@@ -13,13 +13,10 @@ def timesampling():
 def frequenzsampling(time):
     return np.sin(1 * np.pi * time) + np.sin(2 * np.pi * time) + np.sin(4 * np.pi * time)
 
-
-B = 5.0
-f_s = 2 * B
-delta_f = 0.01
-N = int(f_s / delta_f)
-T = N / f_s
-print(N)
+B = 5
+f_s = 10
+N = 1000
+#print(N)
 
 time = timesampling()
 #print(time)
@@ -40,6 +37,7 @@ F = fftpack.fft(f_t)
 f = fftpack.fftfreq(N, 1.0/f_s)
 mask = np.where(f >= 0)
 fig, axes = plt.subplots(3, 1, figsize=(8, 6))
+print(mask)
 
 axes[0].plot(f[mask], np.log(abs(F[mask])), label="real")
 axes[0].plot(B, 0, 'r*', markersize=10)
