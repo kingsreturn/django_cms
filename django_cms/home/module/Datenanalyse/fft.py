@@ -65,38 +65,26 @@ def plot_fft():
     F = fftpack.fft(f_t)
     f = fftpack.fftfreq(N, 1.0 / f_s)
     mask = np.where(f >= 0)
-    fig, axes = plt.subplots(3, 1, figsize=(8, 6))
 
     x_data = f[mask]
     y_data1 = np.log(abs(F[mask]))
     y_data2 = abs(F[mask]) / N
-    y_data3 = np.log(abs(F[mask]))
 
     trace1 = go.Scatter(
         x=x_data,
-        y=y_data1
+        y=y_data1,
+        name="log(|F|)"
     )
     trace2 = go.Scatter(
         x=x_data,
-        y=y_data2
+        y=y_data2,
+        name="|F|",
+        #xaxis='frequency (Hz)'
     )
 
-    #data = [trace1,trace2,trace3]
-    layout = go.Layout(
-        # autosize=False,
-        # width=900,
-        # height=500,
-
-        xaxis=dict(
-            autorange=True
-        ),
-        yaxis=dict(
-            autorange=True
-        )
-    )
     fig = make_subplots(
         rows=2, cols=1,
-        shared_xaxes=False,
+        shared_xaxes=True,
         vertical_spacing=0.03,
         specs=[[{"type": "scatter"}],
                [{"type": "scatter"}]]
@@ -104,7 +92,7 @@ def plot_fft():
 
     fig.add_trace(trace1,row=1, col=1)
     fig.add_trace(trace2, row=2, col=1)
-    #fig = go.Figure(data=data, layout=layout)
+
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     logger.info("Plotting number of points {}.".format(len(x_data)))
     return plot_div
