@@ -28,7 +28,7 @@ def login(request):
         return render(request, 'users/login.html', locals())
 
     login_form = UserForm()
-    return render(request,'users/login.html')
+    return render(request,'users/login.html', locals())
 
 def register(request):
     # register is allowed only when you are not logged in, this can be changed according to different situation
@@ -71,7 +71,7 @@ def register(request):
                 # redirect to login automatically
                 return redirect('/login/')
     register_form = RegisterForm()
-    return render(request,'users/register.html')
+    return render(request,'users/register.html',locals())
 
 def logout(request):
     if not request.session.get('is_login', None):
