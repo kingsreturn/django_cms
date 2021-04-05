@@ -28,6 +28,29 @@
   </head>
 
   <body class="text-center">
+<div class="container">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-white rounded">
+      <div class="container-fluid">
+
+    <ul class="nav me-auto">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <img class="img-responsive center-block" src="{% static 'img/cms.png'%}" alt="" width="40" height="32" viewBox="0 0 118 94" role="img">
+        <li class="nav-item"><a href="/home" class="nav-link link-dark px-2 active">Home</a></li>
+      </a>
+      <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
+      <li class="nav-item"><a href="/faq" class="nav-link link-dark px-2">FAQs</a></li>
+      <li class="nav-item"><a href="/introduction" class="nav-link link-dark px-2">About</a></li>
+    </ul>
+    <ul class="nav">
+      <li class="nav-item"><a href="/login/" class="nav-link link-dark px-2">Login</a></li>
+      <li class="nav-item"><a href="/register" class="nav-link link-dark px-2">Sign up</a></li>
+    </ul>
+  </div>
+</nav>
+
+  {% block content %}{% endblock %}
+</div>
+  <!--
   <div class="container">
     <header class="p-3 bg-dark text-white">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -50,8 +73,9 @@
       </div>
     </div>
   </header>
-      {% block content %}{% endblock %}
+
   </div>
+  -->
   </body>
 
 </html>

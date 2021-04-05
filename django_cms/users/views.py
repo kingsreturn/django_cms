@@ -13,7 +13,7 @@ def index(request):
 def login(request):
     if request.method == "POST":
         login_form = UserForm(request.POST)
-        message = "Please check the content！！"
+        message = ""
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
