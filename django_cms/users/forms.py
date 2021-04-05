@@ -3,8 +3,10 @@ from captcha.fields import CaptchaField
 
 # user login form
 class UserForm(forms.Form):
-    username = forms.CharField(label="Username", max_length=128, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(label="Password", max_length=256, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(label="Username", max_length=128, widget=forms.TextInput(attrs={'class': 'form-control','autofocus': 'autofocus',
+                                                                                               'required': 'required', 'placeholder': 'User Name'}))
+    password = forms.CharField(label="Password", max_length=256, widget=forms.PasswordInput(attrs={'class': 'form-control','autofocus': 'autofocus',
+                                                                                                   'required': 'required', 'placeholder': 'Password'}))
     captcha = CaptchaField(label='Verification code')
 
 # user register form

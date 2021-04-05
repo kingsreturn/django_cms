@@ -130,3 +130,6 @@ class Plot3DScatterView(TemplateView):
         context = super(Plot3DScatterView, self).get_context_data(**kwargs)
         context['plot'] = plots.plot3D_scatter
         return context
+
+def new_login(request):
+    return render(request,'home/new_login.html')

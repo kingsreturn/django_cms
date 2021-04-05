@@ -30,6 +30,9 @@ def login(request):
     login_form = UserForm()
     return render(request,'users/login.html', locals())
 
+def new_login(request):
+    return render(request,'users/new_login.html')
+
 def register(request):
     # register is allowed only when you are not logged in, this can be changed according to different situation
     if request.session.get('is_login', None):
