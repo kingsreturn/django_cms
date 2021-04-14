@@ -1,11 +1,25 @@
-import datetime
-import glob
-import logging
-import os
-
 import numpy as np
+import matplotlib.pyplot as plt
+
 import plotly.graph_objs as go
 from plotly.offline import plot
+import logging
+from plotly.subplots import make_subplots
+from scipy import fftpack
+
+import datetime
+import glob
+import os
+import sys
+#sys.path.append('C:\\Users\\wenfe\\Desktop\\webframework_wenfengyang\\django_cms\\home\\module')
+#import SignalSimulator
+
+
+time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#print(time)
+f_t = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -323,4 +337,22 @@ def plot3D_scatter():
 
 
 if __name__ == "__main__":
-    plot1d()
+    time = time
+    # print(time)
+    f_t = f_t
+    #plot_original()
+
+
+    #F = fftpack.fft(f_t)
+    #f = fftpack.fftfreq(N, 1.0 / f_s)
+    fig, axes = plt.subplots(1, 1, figsize=(8, 6))
+    # print(mask)
+
+    axes.plot(time, f_t, label="real")
+    #axes.plot(B, 0, 'r*', markersize=10)
+    axes.set_xlabel("time (s)", fontsize=14)
+    axes.set_ylabel("function", fontsize=14)
+    plt.show()
+
+
+

@@ -6,14 +6,14 @@ import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-#import dash
+# import dash
 
-#from django_cms.home.dash_apps.finished_apps.Datenerfassung import opc as op
-from home.module.Datenerfassung import CollectData as collect
-from home.module.Datenvorverarbeitung import Datenprocessing as process
+# from django_cms.home.dash_apps.finished_apps.Datencollection import opc as op
+from home.module.Datencollection import opc as collect
+from home.module.Datenprocessing import Datenprocessing as process
 
-#import Datenerfassung.CollectData as collect
-#from pyorbital.orbital import Orbital
+# import Datencollection.CollectData as collect
+# from pyorbital.orbital import Orbital
 
 nodeDo = "ns=2;s=Demo.Dynamic.Scalar.Double"
 nodeFl = "ns=2;s=Demo.Dynamic.Scalar.Float"
@@ -23,7 +23,7 @@ Server = 'opc.tcp://localhost:48010'
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash('SecondExample', external_stylesheets=external_stylesheets)
-#app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
+# app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
 
 data = {
     'time': [],
@@ -32,13 +32,13 @@ data = {
     'Kraft': []
 }
 
-#satellite = Orbital('TERRA')
+# satellite = Orbital('TERRA')
 num = 0
 app.layout = html.Div(
     html.Div([
         dcc.Dropdown(
             id='ProtocolType',
-            #style={'columnCount': 2}
+            # style={'columnCount': 2}
             options=[
                 {'label': 'OPC UA', 'value': 'opc'},
                 {'label': 'MQTT', 'value': 'mqtt'},
@@ -46,16 +46,19 @@ app.layout = html.Div(
             ],
             value='opc'
         ),
-        dcc.Input(id="server", type="text", placeholder="Server",value="opc.tcp://localhost:48010",style = {'padding': '5px', 'fontSize': '16px'}),
-        dcc.Input(id="address1", type="text", placeholder="Address",value="ns=2;s=Demo.Dynamic.Scalar.Double",debounce=True),
-        dcc.Input(id="address2", type="text", placeholder="Address",value="ns=2;s=Demo.Dynamic.Scalar.Float",debounce=True),
+        dcc.Input(id="server", type="text", placeholder="Server", value="opc.tcp://localhost:48010",
+                  style={'padding': '5px', 'fontSize': '16px'}),
+        dcc.Input(id="address1", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Double",
+                  debounce=True),
+        dcc.Input(id="address2", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Float",
+                  debounce=True),
         html.Button('Update', id='submit-val', n_clicks=0),
         html.Div(id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
             id='interval-component',
             disabled=False,
-            interval=1*1000, # in milliseconds
+            interval=1 * 1000,  # in milliseconds
             n_intervals=0,
             max_intervals=100
         )
@@ -69,7 +72,7 @@ app.layout = html.Div(
                Input('address1', 'value'),
                Input('address2', 'value'),
                Input('interval-component', 'n_intervals')])
-def update_metrics(protocol,server,address1,address2,n):
+def update_metrics(protocol, server, address1, address2, n):
     Doubledata = collect.SensorData(protocol, server, address1)
     Floatdata = collect.SensorData(protocol, server, address2)
     Intdata = collect.SensorData(protocol, Server, nodeDo)
@@ -88,21 +91,21 @@ def update_metrics(protocol,server,address1,address2,n):
 @app.callback(Output('live-update-graph', 'figure'),
               [Input('ProtocolType', 'value'),
                Input('interval-component', 'n_intervals')])
-def update_graph_live(protocol,n):
+def update_graph_live(protocol, n):
     # Collect data
     Doubledata = collect.SensorData(protocol, Server, nodeDo)
     Floatdata = collect.SensorData(protocol, Server, nodeFl)
 
-    #Intdata = collect.SensorData(protocol, Server, nodeDo)
+    # Intdata = collect.SensorData(protocol, Server, nodeDo)
 
     lon = Doubledata.getData()
     lat = Floatdata.getData()
-    #alt = Intdata.getData()
+    # alt = Intdata.getData()
 
     data['Drehmoment'].append(lon)
     data['Position'].append(lat)
     data['time'].append(n)
-    average = process.Datenprocessing(data['Drehmoment'],data['Position'])
+    average = process.Datenprocessing(data['Drehmoment'], data['Position'])
     data['Kraft'] = average.Average(average.CombineData())
 
     # Create the graph with subplots
@@ -150,6 +153,7 @@ def update_graph_live(protocol,n):
         title_text="aktuelle Wert nach der Zeit",
     )
     return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

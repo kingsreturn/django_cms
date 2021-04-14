@@ -2,16 +2,16 @@ from django.urls import path
 from . import views
 from django.conf.urls import url
 from home.module import simpleexample
-from home.module.Datenerfassung import CollectData
 from home.module import secondexample
-
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('home', views.home,name='home'),
-    path('graph',views.graph,name = 'graph'),
+    #path('graph',views.graph,name = 'graph'),
+    path('graph',views.Plot_diagramm.as_view(),name = 'graph'),
     path('plot',views.plot,name = 'plot'),
     #url(r'^plot1d/$', views.Plot1DView.as_view(), name='plot1d'),
-    url(r'^plot_original/$', views.Plot1DView.as_view(), name='plot1d'),
+    url(r'^plot_original/$', cache_page(60 * 15)(views.Plot1DView.as_view()), name='plot1d'),
     url(r'^plot_fft/$', views.Plotfft.as_view(), name='plot1d'),
     url(r'^plot2d/$', views.Plot2DView.as_view(), name='plot2d'),
     url(r'^new_login/', views.new_login),
