@@ -5,7 +5,10 @@ from django.shortcuts import render,redirect
 from . import models
 from .forms import UserForm
 from .forms import RegisterForm
+from django.contrib.auth import authenticate, login, logout
 import hashlib
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
 
 def index(request):
     return render(request,'users/home.html')
@@ -20,6 +23,10 @@ def login(request):
             try:
                 user = models.User.objects.get(name=username)
                 if user.password == password:
+                # if user.password == hash_code(password):
+                    #request.session['is_login'] = True
+                    #request.session['user_id'] = user.id
+                    #request.session['user_name'] = user.name
                     return redirect('/graph')
                 else:
                     message = "Passwords are not correct！"
@@ -63,7 +70,7 @@ def register(request):
                     message = 'This email address has already been registered, please use another email address！'
                     return render(request, 'login/register.html', locals())
 
-                # when all the iput are right, create the user
+                # when all the input are right, create the user
 
                 new_user = models.User.objects.create()
                 new_user.name = username

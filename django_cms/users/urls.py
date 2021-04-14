@@ -4,9 +4,10 @@ from . import views
 #from users.views import dashboard
 
 urlpatterns = [
-    url(r"^accounts/", include("django.contrib.auth.urls")),
+    url(r"^/", include("django.contrib.auth.urls")),
     #url(r'^new_login/', views.new_login),
     url(r'^index/', views.index),
+    #url(r'^accounts/login/', views.login),
     url(r'^login/', views.login),
     url(r'^register/', views.register),
     url(r'^logout/', views.logout),

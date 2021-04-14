@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 {% endblock %}
 {% block content %}
+<div class="container-fluid">
+<div class="col-md-offset-10">
 <div class="form-signin">
   <form action="/login" method="post">
 
@@ -15,7 +17,7 @@
 
               {% csrf_token %}
 
-              <h2 class="text-center">Welcome to Sign in</h2>
+              <h2 class="text-center">Welcome to Sign up </h2>
               <div class="form-floating">
                   {{ register_form.username}}
                   {{ register_form.username.label_tag }}
@@ -47,6 +49,7 @@
 
           </form>
     </div>
-
+</div>
+</div>
  <!-- /container -->
 {% endblock %}
