@@ -47,6 +47,7 @@ urlpatterns = [
     path('', include('plottemplate.urls')),
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
     path('', include(router.urls)),
+    path('',include('UserManagement.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^plot_original/$', cache_page(60 * 15)(views.Plot1DView.as_view()), name='plot1d'),
     url(r'^plot_fft/$', views.Plotfft.as_view(), name='plot1d'),
     url(r'^plot2d/$', views.Plot2DView.as_view(), name='plot2d'),
-    url(r'^new_login/', views.new_login),
+    #url(r'^new_login/', views.new_login),
     #url(r'^plot3d/$', views.Plot3DView.as_view(), name='plot3d'),
     url(r'^plot1d_multiple/(?P<n>\d+)/$',
         views.Plot1DMultipleView.as_view(), name='plot1d_multiple'),

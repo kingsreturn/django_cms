@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from .module.Datenvisualization import Datavisualization as plots
 from .module.Datenanalyse.fft import FastFourierTransformation as fft
 #from .module.SignalSimulator import SignalSimulator as ss
-from .module.Datenvisualization.Datavisualization import plot_diagramm
+#from .module.Datenvisualization import Datavisualization as plot_diagramm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,11 +19,14 @@ from django.conf import settings
 from django.views.decorators.cache import cache_page
 from django.core.cache import caches
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 logger = logging.getLogger(__name__)
 
 # Create your views here.
-# @login_required(redirect_field_name='/login/')
+@login_required(redirect_field_name='/login/')
 @cache_page(60 * 15)
 def home(request):
     #if not request.user.is_authenticated:
@@ -75,7 +78,7 @@ class Plot_diagramm(TemplateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(Plot_diagramm, self).get_context_data(**kwargs)
-        context['plot'] = plot_diagramm([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        context['plot'] = plots.plot_diagramm([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                                         [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100],
                                         'Time (s)','Function')
         #context['plot'] = plots.plot1d()
