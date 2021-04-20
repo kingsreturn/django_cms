@@ -26,17 +26,24 @@ from django.views.decorators.csrf import csrf_exempt
 logger = logging.getLogger(__name__)
 
 # Create your views here.
-@login_required(redirect_field_name='/login/')
-@cache_page(60 * 15)
+# @login_required()
+# @cache_page(60 * 15)
 def home(request):
-    #if not request.user.is_authenticated:
-        #return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-    #else:
-    return render(request, 'home/welcome.html')
+    if not request.user.is_authenticated:
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    else:
+        return render(request, 'home/welcome.html')
 
-@cache_page(60 * 15)
+def AutoUpdate(request):
+    return render(request, 'home/autoupdate.html')
+
+
+# @cache_page(60 * 15)
 def graph(requests):
     return render(requests, 'home/opc.html')
+
+def Dataset(request):
+    return render(request, 'home/dataset.html')
 
 def plot(requests):
     x_data = [0,1,2,3]
@@ -48,27 +55,27 @@ def plot(requests):
     return render(requests, "home/plot.html", context={'plot_div': plot_div})
 
 class IndexView(TemplateView):
-    template_name = "home/fft.html"
+    template_name = "home/plot_live.html"
 
 
 class Plot1DView(TemplateView):
     template_name = 'home/fft.html'
     def get_context_data(self, **kwargs):
-        fft.generateData()
+        fft.generateData(fft)
         #print(cache.get('time'))
         #print(cache.get('signal'))
         # Call the base implementation first to get a context
         context = super(Plot1DView, self).get_context_data(**kwargs)
         #context['plot'] = fft.plot_original(time, signal)
-        context['plot'] = fft.plot_original(cache.get('time'), cache.get('signal'))
+        context['plot'] = fft.plot_original(fft,cache.get('time'), cache.get('signal'))
         #context['plot'] = fft.plot_original(caches['time'],caches['signal'])
         #context['plot'] = plots.plot1d()
         return context
 
 
 # @method_decorator(login_required, name='dispatch')
-# class Plot_diagramm(LoginRequiredMixin, TemplateView):
-class Plot_diagramm(TemplateView):
+class Plot_diagramm(LoginRequiredMixin, TemplateView):
+#class Plot_diagramm(TemplateView):
     template_name = 'home/fft.html'
     #login_url = '/login/'
     #redirect_field_name = 'redirect_to'
@@ -90,9 +97,9 @@ class Plotfft(TemplateView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        fft.generateData()
+        fft.generateData(fft)
         context = super(Plotfft, self).get_context_data(**kwargs)
-        context['plot'] = fft.plot_fft(cache.get('signal'))
+        context['plot'] = fft.plot_fft(fft,cache.get('signal'))
         #context['plot'] = plots.plot1d()
         return context
 
@@ -148,7 +155,7 @@ class PlotIqView(TemplateView):
 
 
 class PlotLiveView(TemplateView):
-    template_name = "home/fft.html"
+    template_name = "home/plot_live.html"
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PlotLiveView, self).get_context_data(**kwargs)
@@ -178,5 +185,3 @@ class Plot3DScatterView(TemplateView):
         context['plot'] = plots.plot3D_scatter
         return context
 
-def new_login(request):
-    return render(request,'home/new_login.html')
