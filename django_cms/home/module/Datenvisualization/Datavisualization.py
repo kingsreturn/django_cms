@@ -23,6 +23,29 @@ f_t = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 logger = logging.getLogger(__name__)
 
+def plot_diagramm(x_dataset,y_dataset,x_name,y_name):
+    trace1 = go.Scatter(
+        x=x_dataset,
+        y=y_dataset
+    )
+
+    data = [trace1]
+    layout = go.Layout(
+        # autosize=False,
+        # width=900,
+        # height=500,
+
+        xaxis=dict(
+            autorange=True
+        ),
+        yaxis=dict(
+            autorange=True
+        )
+    )
+    fig = go.Figure(data=data, layout=layout)
+    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+    logger.info("Plotting number of points {}.".format(len(x_dataset)))
+    return plot_div
 
 def plot1d():
     x_data = np.arange(0, 120, 0.1)

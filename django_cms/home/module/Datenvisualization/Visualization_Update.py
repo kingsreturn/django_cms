@@ -9,11 +9,9 @@ import plotly.graph_objects as go
 # import dash
 
 # from django_cms.home.dash_apps.finished_apps.Datencollection import opc as op
-from home.module.Datencollection import opc as collect
-from home.module.Datenprocessing import Datenprocessing as process
+from home.module.Datencollection.opc import Opc as opc
+from home.module.Datenprocessing.Datenprocessing import Datenprocessing as process
 
-# import Datencollection.CollectData as collect
-# from pyorbital.orbital import Orbital
 
 nodeDo = "ns=2;s=Demo.Dynamic.Scalar.Double"
 nodeFl = "ns=2;s=Demo.Dynamic.Scalar.Float"
@@ -22,7 +20,7 @@ Server = 'opc.tcp://localhost:48010'
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = DjangoDash('SecondExample', external_stylesheets=external_stylesheets)
+app = DjangoDash('autoupdate', external_stylesheets=external_stylesheets)
 # app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
 
 data = {
@@ -52,6 +50,8 @@ app.layout = html.Div(
                   debounce=True),
         dcc.Input(id="address2", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Float",
                   debounce=True),
+        dcc.Input(id="address3", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Float",
+                  debounce=True),
         html.Button('Update', id='submit-val', n_clicks=0),
         html.Div(id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
@@ -73,39 +73,38 @@ app.layout = html.Div(
                Input('address2', 'value'),
                Input('interval-component', 'n_intervals')])
 def update_metrics(protocol, server, address1, address2, n):
-    Doubledata = collect.SensorData(protocol, server, address1)
-    Floatdata = collect.SensorData(protocol, server, address2)
-    Intdata = collect.SensorData(protocol, Server, nodeDo)
-    lon = Doubledata.getData()
-    lat = Floatdata.getData()
-    alt = Intdata.getData()
+    Doubledata = opc(server, address1,'double')
+    Floatdata = opc(server, address2,'float')
+    lon = Doubledata.GetData().value
+    lat = Floatdata.GetData().value
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
         html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),
         html.Span('Position: {0:.2f} m'.format(lat), style=style),
-        html.Span('Kraft: {0:0.2f} N'.format(alt), style=style)
     ]
 
 
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
               [Input('ProtocolType', 'value'),
+               Input('server', 'value'),
+               Input('address1', 'value'),
+               Input('address2', 'value'),
                Input('interval-component', 'n_intervals')])
-def update_graph_live(protocol, n):
+def update_graph_live(protocol, server, address1, address2, n):
     # Collect data
-    Doubledata = collect.SensorData(protocol, Server, nodeDo)
-    Floatdata = collect.SensorData(protocol, Server, nodeFl)
+    Doubledata = opc(server, address1,'double')
+    Floatdata = opc(server, address2,'float')
 
-    # Intdata = collect.SensorData(protocol, Server, nodeDo)
 
-    lon = Doubledata.getData()
-    lat = Floatdata.getData()
+    lon = Doubledata.GetData().value
+    lat = Floatdata.GetData().value
     # alt = Intdata.getData()
 
     data['Drehmoment'].append(lon)
     data['Position'].append(lat)
     data['time'].append(n)
-    average = process.Datenprocessing(data['Drehmoment'], data['Position'])
+    average = process(data['Drehmoment'], data['Position'])
     data['Kraft'] = average.Average(average.CombineData())
 
     # Create the graph with subplots

@@ -19,9 +19,9 @@ class Opc(Collection):
 
     def GetData(self):
         if(self.ServerName==''):
-            ServerName= 'opc.tcp://localhost:48010'
+            self.ServerName= 'opc.tcp://localhost:48010'
         if(self.NodeId ==''):
-            NodeID = "ns=2;s=Demo.Dynamic.Scalar.Double"
+            self.NodeID = "ns=2;s=Demo.Dynamic.Scalar.Double"
         client = Client(self.ServerName)
 
         try:

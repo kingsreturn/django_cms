@@ -99,7 +99,7 @@ def line_protocol(Protocol,VariableName,Value):
         """
 
         import socket
-        return 'iot_sensor,host={},Name={} value={}'.format(Protocol,VariableName,Value)
+        return 'iot_sensor,host={},Name={} value={} value'.format(Protocol,VariableName,Value)
 
 def on_exit(db_client: InfluxDBClient, write_api: WriteApi):
     """Close clients after terminate a script.
