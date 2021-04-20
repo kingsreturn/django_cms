@@ -1,7 +1,7 @@
 {% extends "users.html" %}
 
 {% load static %}
-{% block title %}登录{% endblock %}
+{% block title %}Login{% endblock %}
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/signin.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
@@ -24,7 +24,6 @@
 <div class="form-signin" >
   <form method="post">
     <img class="img-responsive center-block" src="{% static 'img/cms.png'%}" alt="" width="72" height="57">
-      {% csrf_token %}
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     {{form}}

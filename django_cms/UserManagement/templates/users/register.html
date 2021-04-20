@@ -6,52 +6,16 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
-<div class="col-md-offset-10">
-<div class="form-signin">
-  <form action="/login" method="post">
+    <div class="container">
+        <div class="form-signin">
+            <form method="POST">
+                <h1 class="h3 mb-3 fw-normal">Welcome to Sign up</h1>
+                    {{form}}
 
-              {% if message %}
-                  <div class="alert alert-warning">{{ message }}</div>
-              {% endif %}
-
-              {% csrf_token %}
-
-              <h2 class="text-center">Welcome to Sign up </h2>
-      <!--
-              <div class="form-floating">
-                  {{ register_form.username}}
-                  {{ register_form.username.label_tag }}
-              </div>
-              <div class="form-floating">
-
-                  {{ register_form.password1 }}
-                  {{ register_form.password1.label_tag }}
-              </div>
-              <div class="form-floating">
-
-                  {{ register_form.password2 }}
-                  {{ register_form.password2.label_tag }}
-              </div>
-              <div class="form-floating">
-                  {{ register_form.email }}
-                  {{ register_form.email.label_tag }}
-              </div>
-              <br>
-              <div class="form-group">
-                  {{ register_form.sex.label_tag }}
-                  {{ register_form.sex }}
-              </div>
-              <br>
--->
-                {{register_form.as_p}}
-
-              <button type="reset" class="btn btn-default pull-left">Reset</button>
-              <button type="submit" class="btn btn-primary pull-right">Submit</button>
-
-          </form>
+                <button type="reset" class="btn btn-default pull-left">Reset</button>
+                <button type="submit" class="btn btn-primary pull-right">Submit</button>
+            </form>
+        </div>
     </div>
-</div>
-</div>
  <!-- /container -->
 {% endblock %}

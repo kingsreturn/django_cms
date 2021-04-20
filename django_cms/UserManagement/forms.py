@@ -1,6 +1,6 @@
 from django import forms
 from captcha.fields import CaptchaField
-from django.contrib.auth import authenticate,get_user_model
+from django.contrib.auth import authenticate, get_user_model
 
 User = get_user_model()
 
@@ -29,6 +29,7 @@ class UserLoginForm(forms.Form):
 
 # user register form
 class UserRegisterForm(forms.ModelForm):
+
     gender = (
         ('male', "male"),
         ('female', "female"),
@@ -41,12 +42,12 @@ class UserRegisterForm(forms.ModelForm):
                                                                                                'required': 'required','placeholder': ' Confirm Password'}))
     email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={'class': 'form-control','autofocus': 'autofocus',
                                                                                                'required': 'required','placeholder': 'Email'}))
-    sex = forms.ChoiceField(label='Gender', choices=gender)
-    captcha = CaptchaField(label='Verification code')
+    #sex = forms.ChoiceField(label='Gender', choices=gender)
+    #captcha = CaptchaField(label='Verification code')
 
 
     class Meta:
-        model=User
+        model = User
         fields=[
             'username',
             'email',
@@ -55,8 +56,12 @@ class UserRegisterForm(forms.ModelForm):
         ]
 
     def clean(self, *args, **kwargs):
+        username=self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
         email_qs = User.objects.filter(email=email)
+        username_qs = User.objects.filter(username=username)
         if email_qs.exists():
             raise forms.ValidationError('This email has already been used')
+        if username_qs.exists():
+            raise forms.ValidationError('This Username has already been used')
         return super(UserRegisterForm, self).clean(*args, **kwargs)
