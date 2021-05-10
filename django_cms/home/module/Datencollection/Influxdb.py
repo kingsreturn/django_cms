@@ -41,9 +41,12 @@ class Influxdb:
     def WriteDataPoint(self,bucket,Measurement,Tag,Value,time):
         org = "IWM"
         Value=random.randint(1,100)
+        bucket='django-cms'
         #_point1 = Point(Measurement).tag("Quality", Tag).field("temperature", Value).time(datetime.utcnow(), WritePrecision.MS)
         _write_api = self.client.write_api(write_options=WriteOptions(batch_size=1))
-        _write_api.write(bucket, org, line_protocol('opc', 'temperature', Value))
+        #_write_api = self.client.write_api(write_options=SYNCHRONOUS)
+        #_write_api.write(bucket=bucket, record=line_protocol('opc', Measurement, Value))
+        _write_api.write(bucket, org, line_protocol('opc', Measurement, Value))
         print('Write Data success!')
 
     def WriteData(self,Protocol,VariableName,Value,time):
@@ -137,6 +140,7 @@ if __name__ == "__main__":
 
 
     _db_client = InfluxDBClient(url=url, token=token, org=org)
+
     query_api = _db_client.query_api()
 
     ## using Table structure

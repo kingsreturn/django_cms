@@ -5,7 +5,7 @@ from .Influxdb import Influxdb
 class Collection(metaclass=ABCMeta):
     def __init__(self):
         # self.name是成员变量，name是形参、局部变量
-        self.protocol = ''
+        self.protocol = 'mqtt'
         self.server = ''
         self.address = ''
         self.sampling = True
@@ -19,7 +19,8 @@ class Collection(metaclass=ABCMeta):
 
     def StoreDataPoint(self,value,time,VariableName):
         influxdb = Influxdb()
-        influxdb.WriteDataPoint(self.protocol,VariableName,value)
+        influxdb.ConnnectDatabase()
+        influxdb.WriteDataPoint(self.protocol,VariableName,'',value,time)
 
 
     # Constantly read Data into Dataset, return the Dataset when the function is called
