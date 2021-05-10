@@ -20,7 +20,45 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import caches
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+import _thread
+import time
+from .module.Datencollection.mqtt import Mqtt as mq
 
+
+def ReadSinData():
+    topic1="/test/sin"
+    mqtt_client = mq(topic1)
+    mqtt_client.client.connect("8.140.157.208", 8083, 60)
+    mqtt_client.client.subscribe(topic1, 0)
+    mqtt_client.client.loop_forever()
+
+def ReadCosData():
+    topic2 = "/test/cos"
+    mqtt_client = mq(topic2)
+    mqtt_client.client.connect("8.140.157.208", 8083, 60)
+    mqtt_client.client.subscribe(topic2, 0)
+    mqtt_client.client.loop_forever()
+
+def print_time(threadName, delay):
+    count = 0
+    while count < 100:
+        if count % 10 == 0:
+            cache.set('messages','This is a test number:{}!'.format(count),10)
+        time.sleep(delay)
+        count += 1
+        cache.set('messages', 'This is a test number:{}!'.format(count), 10)
+        print ("%s: %s , %s" %(threadName, time.ctime(time.time()),count))
+
+# 创建两个线程
+try:
+   #_thread.start_new_thread( print_time, ("Thread-1", 2, ) )
+   _thread.start_new_thread(ReadSinData, ())
+   _thread.start_new_thread(ReadCosData, ())
+   #_thread.start_new_thread(ReadMqttData, ('/test/sawtooth'))
+
+except:
+   print ("Error: 无法启动线程")
 
 
 logger = logging.getLogger(__name__)
@@ -32,7 +70,14 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
     else:
-        return render(request, 'home/welcome.html')
+        # messages = 'This is a test Error!'
+        #cache.set('messages','This is a test Message!',10)
+
+        messages.info(request,cache.get('messages'))
+        messages.warning(request, 'This is a test Warning!')
+        messages.error(request, 'This is a test Error!')
+
+        return render(request, 'home/home.html')
 
 def AutoUpdate(request):
     return render(request, 'home/autoupdate.html')
