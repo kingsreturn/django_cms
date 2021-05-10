@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<meta http-equiv="refresh" content="5;url=http://localhost:8000/home">
+{% endblock %}
+{% block javascript %}
+<script src="/js/jquery-1.3.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+  //定时刷新界面（3秒）
+  $(document).ready(function(){
+      setInterval(function() {
+        $.get("{% url 'home' %}" + window.location.search,//GET请求的url地址
+        function(data,status){
+          $("#home").html(data);//更新列表内容
+          });
+        }, 3000);
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+    {% load plotly_dash %}
+    <div class="container-fluid">
+
+                    <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard Condition Monitoring</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
+    </div>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+    <div class="{% plotly_class name='example' %} card" style="height: 100%; width: 100%">
+    {% plotly_app name='example' ratio=0.45 %}
+    </div>
+<br>
+    {{ plot1 | safe }}
+{% endblock %}
