@@ -6,6 +6,8 @@ import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import numpy as np
+from django.core.cache import cache
 # import dash
 
 # from django_cms.home.dash_apps.finished_apps.Datencollection import opc as op
@@ -58,7 +60,7 @@ app.layout = html.Div(
         dcc.Interval(
             id='interval-component',
             disabled=False,
-            interval=1 * 1000,  # in milliseconds
+            interval=2 * 1000,  # in milliseconds
             n_intervals=0,
             max_intervals=100
         )
@@ -73,10 +75,12 @@ app.layout = html.Div(
                Input('address2', 'value'),
                Input('interval-component', 'n_intervals')])
 def update_metrics(protocol, server, address1, address2, n):
-    Doubledata = opc(server, address1,'double')
-    Floatdata = opc(server, address2,'float')
-    lon = Doubledata.GetData().value
-    lat = Floatdata.GetData().value
+    #Doubledata = opc(server, address1,'double')
+    #Floatdata = opc(server, address2,'float')
+    #lon = Doubledata.GetData().value
+    #lat = Floatdata.GetData().value
+    lon = cache.get('/test/sin/value')
+    lat = cache.get('/test/cos/value')
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
         html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),
@@ -93,27 +97,26 @@ def update_metrics(protocol, server, address1, address2, n):
                Input('interval-component', 'n_intervals')])
 def update_graph_live(protocol, server, address1, address2, n):
     # Collect data
-    Doubledata = opc(server, address1,'double')
-    Floatdata = opc(server, address2,'float')
+    #Doubledata = opc(server, address1,'double')
+    #Floatdata = opc(server, address2,'float')
 
 
-    lon = Doubledata.GetData().value
-    lat = Floatdata.GetData().value
+    #lon = Doubledata.GetData().value
+    #lat = Floatdata.GetData().value
     # alt = Intdata.getData()
 
-    data['Drehmoment'].append(lon)
-    data['Position'].append(lat)
-    data['time'].append(n)
-    average = process(data['Drehmoment'], data['Position'])
-    data['Kraft'] = average.Average(average.CombineData())
+    data['Drehmoment'] = cache.get('/test/sin')
+    data['Position'] = cache.get('/test/cos')
+    data['time'] = np.linspace(0, 10, 100)
+    #average = process(data['Drehmoment'], data['Position'])
+    #data['Kraft'] = average.Average(average.CombineData())
 
     # Create the graph with subplots
     fig = make_subplots(
-        rows=3, cols=1,
+        rows=2, cols=1,
         shared_xaxes=False,
         vertical_spacing=0.03,
         specs=[[{"type": "scatter"}],
-               [{"type": "scatter"}],
                [{"type": "scatter"}]]
     )
 
@@ -136,15 +139,6 @@ def update_graph_live(protocol, server, address1, address2, n):
             name="Position"
         ),
         row=2, col=1
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=data['time'],
-            y=data['Kraft'],
-            mode="lines",
-            name="Kraft"
-        ),
-        row=3, col=1
     )
     fig.update_layout(
         height=800,

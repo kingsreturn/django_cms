@@ -3,6 +3,8 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 from django_plotly_dash import DjangoDash
+import numpy as np
+from django.core.cache import cache
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -27,26 +29,24 @@ app.layout = html.Div([
                Output('slider-graph', 'figure'),
               [Input('slider-updatemode', 'value')])
 def display_value(value):
-    x = []
-    for i in range(value):
-        x.append(i)
+    x_axis = np.linspace(0, 10, 100)
 
-    y = []
+    y_axis = cache.get('/test/sin')
 
-    for i in range(value):
-        y.append(i*i)
+    '''    
+    fig = go.Figure(
+        data=[go.scatter(x=x_axis,y=y_axis)],
+        layout=layout
+    )'''
 
     graph = go.Scatter(
-        x=x,
-        y=y,
+        x=x_axis,
+        y=y_axis,
         name='Manipulate Graph'
     )
     layout = go.Layout(
         paper_bgcolor='#27293d',
         plot_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(range=[min(x), max(x)]),
-        yaxis=dict(range=[min(y), max(y)]),
         font=dict(color='white'),
-
     )
     return {'data': [graph], 'layout': layout}
