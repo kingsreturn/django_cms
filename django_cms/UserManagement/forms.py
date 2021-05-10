@@ -30,9 +30,10 @@ class UserLoginForm(forms.Form):
 # user register form
 class UserRegisterForm(forms.ModelForm):
 
-    gender = (
-        ('male', "male"),
-        ('female', "female"),
+    position = (
+        ('administrator', "administrator"),
+        ('maintainer', "maintainer"),
+        ('user', "user"),
     )
     username = forms.CharField(label="Username", max_length=128, widget=forms.TextInput(attrs={'class': 'form-control','autofocus': 'autofocus',
                                                                                                'required': 'required', 'placeholder': 'User Name'}))
@@ -42,7 +43,7 @@ class UserRegisterForm(forms.ModelForm):
                                                                                                'required': 'required','placeholder': ' Confirm Password'}))
     email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={'class': 'form-control','autofocus': 'autofocus',
                                                                                                'required': 'required','placeholder': 'Email'}))
-    #sex = forms.ChoiceField(label='Gender', choices=gender)
+    position = forms.ChoiceField(label='position', choices=position)
     #captcha = CaptchaField(label='Verification code')
 
 
@@ -52,7 +53,8 @@ class UserRegisterForm(forms.ModelForm):
             'username',
             'email',
             'password1',
-            'password2'
+            'password2',
+            'position'
         ]
 
     def clean(self, *args, **kwargs):

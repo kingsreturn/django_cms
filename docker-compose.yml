@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ./django_cms:/django_cms
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
       - DEBUG=1
