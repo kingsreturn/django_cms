@@ -49,7 +49,6 @@ Markdown==3.3.4
 MarkupSafe==1.1.1
 matplotlib==3.4.0
 msgpack==1.0.2
-mysqlclient==2.0.3
 numpy==1.20.1
 opcua==0.98.13
 paho-mqtt==1.5.1
