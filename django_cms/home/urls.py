@@ -7,11 +7,10 @@ from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('home', views.home,name='home'),
-    path('autoupdate', views.AutoUpdate,name='autoupdate'),
+    path('dashboard', views.AutoUpdate,name='autoupdate'),
     #path('graph',views.graph,name = 'graph'),
     path('graph',views.Plot_diagramm.as_view(),name = 'graph'),
     path('plot',views.plot,name = 'plot'),
-    path('Dataset',views.Dataset,name='dataset'),
     path('visualization/opc',views.Plot_diagramm.as_view(),name='opc'),
     path('autoupdate',views.AutoUpdate,name='autoupdate'),
     #url(r'^plot1d/$', views.Plot1DView.as_view(), name='plot1d'),

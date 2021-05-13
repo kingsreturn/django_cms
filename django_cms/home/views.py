@@ -25,7 +25,7 @@ import _thread
 import time
 from .module.Datencollection.mqtt import Mqtt as mq
 
-
+'''
 def ReadSinData():
     topic1="/test/sin"
     mqtt_client = mq(topic1)
@@ -59,7 +59,7 @@ try:
 
 except:
    print ("Error: 无法启动线程")
-
+'''
 
 logger = logging.getLogger(__name__)
 
@@ -144,7 +144,8 @@ class Plotfft(TemplateView):
         # Call the base implementation first to get a context
         fft.generateData(fft)
         context = super(Plotfft, self).get_context_data(**kwargs)
-        context['plot'] = fft.plot_fft(fft,cache.get('signal'))
+        #context['plot'] = fft.plot_fft(fft,cache.get('signal'))
+        context['plot'] = fft.plot_fft(fft,cache.get('/test/sin'))
         #context['plot'] = plots.plot1d()
         return context
 

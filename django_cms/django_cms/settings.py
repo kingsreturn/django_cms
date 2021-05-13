@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users',
     'captcha',
     'plottemplate',
+    'datacollection',
     'UserManagement'
 ]
 
@@ -95,14 +96,14 @@ WSGI_APPLICATION = 'django_cms.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-'''
+
 '''
 DATABASES = {
     'default': {
@@ -113,7 +114,7 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -123,6 +124,7 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
+'''
 '''
 CACHES = {
     'default': {

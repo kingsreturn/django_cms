@@ -36,25 +36,6 @@ data = {
 num = 0
 app.layout = html.Div(
     html.Div([
-        dcc.Dropdown(
-            id='ProtocolType',
-            # style={'columnCount': 2}
-            options=[
-                {'label': 'OPC UA', 'value': 'opc'},
-                {'label': 'MQTT', 'value': 'mqtt'},
-                {'label': 'REST', 'value': 'rest'}
-            ],
-            value='opc'
-        ),
-        dcc.Input(id="server", type="text", placeholder="Server", value="opc.tcp://localhost:48010",
-                  style={'padding': '5px', 'fontSize': '16px'}),
-        dcc.Input(id="address1", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Double",
-                  debounce=True),
-        dcc.Input(id="address2", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Float",
-                  debounce=True),
-        dcc.Input(id="address3", type="text", placeholder="Address", value="ns=2;s=Demo.Dynamic.Scalar.Float",
-                  debounce=True),
-        html.Button('Update', id='submit-val', n_clicks=0),
         html.Div(id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
@@ -69,12 +50,8 @@ app.layout = html.Div(
 
 
 @app.callback(Output('live-update-text', 'children'),
-              [Input('ProtocolType', 'value'),
-               Input('server', 'value'),
-               Input('address1', 'value'),
-               Input('address2', 'value'),
-               Input('interval-component', 'n_intervals')])
-def update_metrics(protocol, server, address1, address2, n):
+              [Input('interval-component', 'n_intervals')])
+def update_metrics(n):
     #Doubledata = opc(server, address1,'double')
     #Floatdata = opc(server, address2,'float')
     #lon = Doubledata.GetData().value
@@ -90,12 +67,8 @@ def update_metrics(protocol, server, address1, address2, n):
 
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
-              [Input('ProtocolType', 'value'),
-               Input('server', 'value'),
-               Input('address1', 'value'),
-               Input('address2', 'value'),
-               Input('interval-component', 'n_intervals')])
-def update_graph_live(protocol, server, address1, address2, n):
+              [Input('interval-component', 'n_intervals')])
+def update_graph_live(n):
     # Collect data
     #Doubledata = opc(server, address1,'double')
     #Floatdata = opc(server, address2,'float')
@@ -143,7 +116,7 @@ def update_graph_live(protocol, server, address1, address2, n):
     fig.update_layout(
         height=800,
         showlegend=False,
-        title_text="aktuelle Wert nach der Zeit",
+        title_text="Mqtt Test Signal",
     )
     return fig
 
