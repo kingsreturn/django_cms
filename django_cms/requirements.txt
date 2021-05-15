@@ -55,7 +55,6 @@ paho-mqtt==1.5.1
 pandas==1.2.3
 Pillow==8.1.2
 plotly==4.14.3
-psycopg2==2.8.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
@@ -74,7 +73,6 @@ service-identity==18.1.0
 six==1.15.0
 sqlparse==0.4.1
 Twisted==21.2.0
-twisted-iocpsupport==1.0.1
 txaio==21.2.1
 urllib3==1.26.4
 virtualenv==20.4.3
