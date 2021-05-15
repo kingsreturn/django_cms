@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5fadc9dc-a060-4f4a-a5e6-398fa3cf3230" name="alicloud" url="http://8.140.157.208:8000">
+        <fileTransfer rootFolder="/root/django_cms" accessType="SFTP" host="8.140.157.208" port="22" sshConfigId="a0309c47-8f69-4799-91db-d5c77c40b0f1" sshConfig="root@8.140.157.208:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

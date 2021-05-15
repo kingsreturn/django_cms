@@ -20,6 +20,7 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import caches
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import _thread
 import time
