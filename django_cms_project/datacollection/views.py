@@ -5,6 +5,7 @@ import _thread
 import time
 from .forms import DataQuelleForm
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 
 def ReadSinData():
@@ -33,10 +34,8 @@ def print_time(threadName, delay):
 
 # 创建两个线程
 try:
-   #_thread.start_new_thread( print_time, ("Thread-1", 2, ) )
    _thread.start_new_thread(ReadSinData, ())
    _thread.start_new_thread(ReadCosData, ())
-   #_thread.start_new_thread(ReadMqttData, ('/test/sawtooth'))
 
 except:
    print ("Error: 无法启动线程")
@@ -55,6 +54,7 @@ def adddata(request):
         DataQuelle_form = DataQuelleForm(request.POST)
         if DataQuelle_form.is_valid():
             DataQuelle= DataQuelle_form.save()
+            messages.info(request, 'Dataquelle is stored in Database')
         #server = DataQuelle_form.cleaned_data.get('server')
         #variable_address = DataQuelle_form.cleaned_data.get('variable_address')
         #variable_name = DataQuelle_form.cleaned_data.get('variable_name')

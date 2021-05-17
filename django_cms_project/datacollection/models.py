@@ -7,3 +7,6 @@ class DataQuelle(models.Model):
     protokol = models.CharField(max_length=10, default='mqtt')
     variable_address = models.CharField(max_length=100, default='/test/sin')
     variable_name = models.CharField(max_length=100, default='strom')
+
+    def __str__(self):
+        return self.protokol

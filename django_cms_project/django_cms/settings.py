@@ -26,7 +26,7 @@ SECRET_KEY = '8q*6bt)_zi%%#%f1e&scu%!%h^5an1(=l+7wyg)8clcwib$)x!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8.140.157.208','51.116.185.53']
+ALLOWED_HOSTS = ['8.140.157.208','51.116.185.53','www.intelcms.com','www.meywf.com','localhost']
 
 
 # Application definition
