@@ -8,4 +8,4 @@ from .models import DataQuelle
 class DataQuelleForm(ModelForm):
     class Meta:
         model = DataQuelle
-        fields = ['server','protokol','variable_address','variable_name']
+        fields = ['server','protocol','variable_address','variable_name']

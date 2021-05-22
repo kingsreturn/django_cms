@@ -7,10 +7,7 @@ import logging
 from plotly.subplots import make_subplots
 from scipy import fftpack
 from django.core.cache import cache
-import json
-#import SignalSimulator as ss
 
-#from home.module.SignalSimulator import SignalSimulator as Signal
 
 logger = logging.getLogger(__name__)
 

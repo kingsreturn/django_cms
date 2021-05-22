@@ -232,3 +232,10 @@ class Plot3DScatterView(TemplateView):
         context['plot'] = plots.plot3D_scatter
         return context
 
+def warning(dataset,limit):
+    warnstatus = False
+    for value in dataset:
+        if value > limit:
+            warnstatus
+    return warnstatus
+

@@ -11,4 +11,3 @@ class Processing(metaclass=ABCMeta):
     @abstractmethod
     def GenerateDataset(self):
         pass
-

@@ -56,7 +56,7 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return render (request,'users/logout.html')
+    return render(request,'users/logout.html')
 
 def hash_code(s, salt='django'):
     h = hashlib.sha256()
@@ -64,3 +64,9 @@ def hash_code(s, salt='django'):
     # update methode only accept byte typ
     h.update(s.encode())
     return h.hexdigest()
+
+def userlist(request):
+    return render(request,'users/todo.html')
+
+def adduser(request):
+    return render(request,'users/todo.html')

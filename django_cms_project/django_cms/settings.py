@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'django_cms.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -104,7 +104,7 @@ DATABASES = {
     }
 }
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -114,17 +114,17 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_cms',
         'USER': 'mysql',
-        'PASSWORD': '123456',
+        'PASSWORD': 'Django_cms123456',
         'HOST': 'localhost'
     }
 }
-'''
+
 '''
 CACHES = {
     'default': {

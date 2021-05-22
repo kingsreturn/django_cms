@@ -1,5 +1,5 @@
 import unittest
-from models import DataQuelle
+from .models import DataQuelle
 
 
 class MyTestCase(unittest.TestCase):

@@ -8,6 +8,8 @@ urlpatterns = [
     path('RohData/opc',views.test, name='dataset'),
     path('RohData/mqtt',views.test, name='dataset'),
     path('adddata',views.adddata,name='adddata'),
+    path('datasetlist',views.datasetlist,name='adddata'),
+
 ]
 
 
