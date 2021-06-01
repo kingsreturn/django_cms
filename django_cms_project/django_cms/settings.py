@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'captcha',
     'plottemplate',
     'datacollection',
-    'UserManagement'
+    'UserManagement',
+    'visualization',
+    'analyse',
+    'dataprocess'
 ]
 
 MIDDLEWARE = [
@@ -164,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # AUTH_USER_MODEL = 'UserManagement.MyUser'
 
 # 设置允许保存session
-SESSION_SAVE_EVERY_REQUEST = True
+SESSION_SAVE_EVERY_REQUEST = False
 # 设置session存放在缓存中
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # 使用默认选项的缓存设置存放session
