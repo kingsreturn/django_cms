@@ -29,8 +29,7 @@ class UserLoginForm(forms.Form):
 
 # user register form
 class UserRegisterForm(forms.ModelForm):
-
-    position = (
+    role = (
         ('administrator', "administrator"),
         ('maintainer', "maintainer"),
         ('user', "user"),
@@ -43,7 +42,7 @@ class UserRegisterForm(forms.ModelForm):
                                                                                                'required': 'required','placeholder': ' Confirm Password'}))
     email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={'class': 'form-control','autofocus': 'autofocus',
                                                                                                'required': 'required','placeholder': 'Email'}))
-    position = forms.ChoiceField(label='position', choices=position)
+    role = forms.ChoiceField(label='role', choices=role)
     #captcha = CaptchaField(label='Verification code')
 
 
@@ -54,7 +53,7 @@ class UserRegisterForm(forms.ModelForm):
             'email',
             'password1',
             'password2',
-            'position'
+            'role'
         ]
 
     def clean(self, *args, **kwargs):

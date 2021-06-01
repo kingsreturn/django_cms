@@ -1,18 +1,21 @@
 from django.shortcuts import render,redirect
-
-# Create your views here.
-from django.shortcuts import render,redirect
 #from . import models
 #from .forms import UserForm
 #from .forms import RegisterForm
 import hashlib
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate,get_user_model,login,logout
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import authenticate,get_user_model,login,logout,get_user
 from .forms import UserLoginForm,UserRegisterForm
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.template import Template,Context
+from .decorators import unauthenticated_user,allowed_users, admin_only
+from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt
+@unauthenticated_user
 def login_view(request):
     next = request.GET.get('next')
     form =UserLoginForm(request.POST or None)
@@ -47,16 +50,21 @@ def register_view(request):
         login(request, new_user)
         if next:
             return redirect(next)
-        return redirect('/accounts/login')
+        return redirect('/userlist')
     context = {
         'form': register_form,
     }
 
-    return render(request,'users/register.html',context)
+    return render(request,'register.html',context)
 
 def logout_view(request):
+    user = get_user(request)
+
     logout(request)
-    return render(request,'users/logout.html')
+    request.session.flush()
+    print('you are log out from cms!')
+    request.user = AnonymousUser
+    return render(request,'logout.html')
 
 def hash_code(s, salt='django'):
     h = hashlib.sha256()
@@ -66,7 +74,37 @@ def hash_code(s, salt='django'):
     return h.hexdigest()
 
 def userlist(request):
-    return render(request,'users/todo.html')
+    User = get_user_model()
+    result = User.objects.all()
+    #template = Template('userlist.html')
+    #html = template.render(Context({'content': result}))
+    return render(request,'userlist.html',{'content':result})
 
 def adduser(request):
-    return render(request,'users/todo.html')
+    return render(request,'todo.html')
+
+@csrf_exempt
+def delete_user(request,id):
+    User =get_user_model()
+    if request.method == 'GET':
+        try:
+            result = User.objects.filter(id=id)
+            result.delete()
+            return HttpResponse('success')
+        except:
+            return HttpResponse('fail')
+#获取修改用户的页面
+@login_required(login_url='accounts/login/')
+def editUser(request,id):
+    User = get_user_model()
+    if request.method == 'GET':
+        #result = User.objects.filter(id)
+        result = User.objects.filter(id=id)
+        #print("需要修改的用户名为：".format(result))
+        template = Template('updateuser.html')
+        html = template.render({'content': result})
+        return HttpResponse(html)
+
+@login_required(login_url='accounts/login/')
+def notpermitted(request):
+    return render(request,'NotPermitted.html')
