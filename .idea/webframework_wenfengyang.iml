@@ -21,6 +21,14 @@
     <option name="renderExternalDocumentation" value="true" />
   </component>
   <component name="TemplatesService">
+    <option name="templateFileTypes">
+      <list>
+        <option value="XHTML" />
+        <option value="HTML" />
+        <option value="XML" />
+        <option value="PythonStub" />
+      </list>
+    </option>
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
   </component>
 </module>

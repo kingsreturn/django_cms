@@ -58,6 +58,8 @@ def update_metrics(n):
     #lat = Floatdata.GetData().value
     lon = cache.get('/test/sin/value')
     lat = cache.get('/test/cos/value')
+    print(lon)
+
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
         html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),

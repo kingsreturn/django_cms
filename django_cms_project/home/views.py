@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
-
+from UserManagement.decorators import unauthenticated_user, allowed_users
 import logging
 
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -65,29 +65,27 @@ except:
 logger = logging.getLogger(__name__)
 
 # Create your views here.
-# @login_required()
-# @cache_page(60 * 15)
+@login_required(login_url='accounts/login/')
 def home(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
     else:
-        # messages = 'This is a test Error!'
-        #cache.set('messages','This is a test Message!',10)
-
         messages.info(request,cache.get('messages'))
         messages.warning(request, 'This is a test Warning!')
         messages.error(request, 'This is a test Error!')
 
         return render(request, 'home/home.html')
 
+@login_required(login_url='accounts/login/')
 def AutoUpdate(request):
     return render(request, 'home/autoupdate.html')
 
 
-# @cache_page(60 * 15)
+@login_required(login_url='accounts/login/')
 def graph(requests):
     return render(requests, 'home/opc.html')
 
+@login_required(login_url='accounts/login/')
 def Dataset(request):
     return render(request, 'home/dataset.html')
 
@@ -108,14 +106,9 @@ class Plot1DView(TemplateView):
     template_name = 'home/fft.html'
     def get_context_data(self, **kwargs):
         fft.generateData(fft)
-        #print(cache.get('time'))
-        #print(cache.get('signal'))
         # Call the base implementation first to get a context
         context = super(Plot1DView, self).get_context_data(**kwargs)
-        #context['plot'] = fft.plot_original(time, signal)
         context['plot'] = fft.plot_original(fft,cache.get('time'), cache.get('signal'))
-        #context['plot'] = fft.plot_original(caches['time'],caches['signal'])
-        #context['plot'] = plots.plot1d()
         return context
 
 
