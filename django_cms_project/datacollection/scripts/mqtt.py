@@ -42,8 +42,9 @@ class Mqtt():
             del self.Data[0:40]
             cache.set(self.address,self.Data,10)
             cache.set(self.address+'/value',value,10)
+            #print(self.Data[0:40])
             self.StoreData(self.Data[0:40])
-        self.Data.append(value)
+        self.Data.append(round(value,2))
         return str(msg.payload.decode("utf-8"))
 
     # call back function when disconnected to broker
@@ -75,5 +76,5 @@ if __name__ == '__main__':
     topic2= "/test/cos"
     client1 = Mqtt("/test/sin","8.140.157.208", 8083)
     client2 = Mqtt("/test/cos","8.140.157.208", 8083)
-    time.sleep(3)
+    time.sleep(30)
     client1.client.disconnect()

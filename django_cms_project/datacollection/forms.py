@@ -9,3 +9,6 @@ class DataQuelleForm(ModelForm):
     class Meta:
         model = DataQuelle
         fields = ['server','protocol','variable_address','variable_name']
+
+class FileFieldForm(forms.Form):
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
