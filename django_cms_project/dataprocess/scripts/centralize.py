@@ -10,7 +10,7 @@ class Centralized():
     def Average(self, dataset):
         return np.average(dataset, axis=0)
 
-    def GenerateDataset(self):
+    def GenerateProcessedData(self):
         average = np.average(self.y_dataset, axis=0)
         for i in range(len(self.y_dataset)):
             self.y_dataset[i] -= average
@@ -24,6 +24,6 @@ class Centralized():
 
 if __name__ == '__main__':
     dataset = Centralized([1, 2, 3, 4], 'time',[5, 6, 7, 8],'result')
-    dataset.GenerateDataset()
+    dataset.GenerateProcessedData()
     print(dataset.y_dataset)
     dataset.StoreData()

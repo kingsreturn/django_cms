@@ -1,26 +1,19 @@
 import dash_core_components as dcc
-import datetime
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+from dash import Dash
 import numpy as np
 from django.core.cache import cache
 from .centralize import Centralized
 
 
-
-nodeDo = "ns=2;s=Demo.Dynamic.Scalar.Double"
-nodeFl = "ns=2;s=Demo.Dynamic.Scalar.Float"
-nodeIn = "ns=2;s=Demo.Dynamic.Scalar.Int32"
-Server = 'opc.tcp://localhost:48010'
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash('processed_mqtt', external_stylesheets=external_stylesheets)
-# app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
+#app = Dash('processed_mqtt', external_stylesheets=external_stylesheets)
 
 data = {
     'time': [],
@@ -29,7 +22,6 @@ data = {
     'Kraft': []
 }
 
-# satellite = Orbital('TERRA')
 num = 0
 app.layout = html.Div(
     html.Div([
@@ -40,7 +32,7 @@ app.layout = html.Div(
             disabled=False,
             interval=2 * 1000,  # in milliseconds
             n_intervals=0,
-            max_intervals=100
+            max_intervals=1000
         )
     ])
 )
@@ -49,16 +41,12 @@ app.layout = html.Div(
 @app.callback(Output('live-update-text', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_metrics(n):
-    #Doubledata = opc(server, address1,'double')
-    #Floatdata = opc(server, address2,'float')
-    #lon = Doubledata.GetData().value
-    #lat = Floatdata.GetData().value
     lon = cache.get('/test/sin/value')
     lat = cache.get('/test/cos/value')
-    style = {'padding': '5px', 'fontSize': '16px'}
+    style = {'padding': '15px', 'fontSize': '16px'}
     return [
-        html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),
-        html.Span('Position: {0:.2f} m'.format(lat), style=style),
+        html.Span('Sine signal: {0:.2f} '.format(lon), style=style),
+        html.Span('Cosine signal: {0:.2f} '.format(lat), style=style),
     ]
 
 
@@ -71,8 +59,8 @@ def update_graph_live(n):
     origin_cos= Centralized(cache.get('/test/cos'),'cos')
 
 
-    data['Drehmoment'] = origin_sin.GenerateDataset()
-    data['Position'] = origin_sin.GenerateDataset()
+    data['Drehmoment'] = origin_sin.GenerateProcessedData()
+    data['Position'] = origin_cos.GenerateProcessedData()
     data['time'] = np.linspace(0, 10, 100)
 
     # Create the graph with subplots
@@ -108,6 +96,8 @@ def update_graph_live(n):
         height=800,
         showlegend=False,
         title_text="Mqtt Test Signal",
+        xaxis_title='Time (s)',
+        yaxis_title='Sinus signal'
     )
     return fig
 

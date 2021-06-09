@@ -12,7 +12,7 @@ const handleAlerts = (type, msg) => {
 
 Dropzone.autoDiscover = false
 const myDropzone = new Dropzone('#my-dropozne', {
-    url: '/read_csv',
+    url: '/read_csv/',
     init: function() {
         this.on('sending', function(file, xhr, formData){
             console.log('sending')

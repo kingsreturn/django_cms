@@ -26,55 +26,17 @@ import _thread
 import time
 from .module.Datencollection.mqtt import Mqtt as mq
 
-'''
-def ReadSinData():
-    topic1="/test/sin"
-    mqtt_client = mq(topic1)
-    mqtt_client.client.connect("8.140.157.208", 8083, 60)
-    mqtt_client.client.subscribe(topic1, 0)
-    mqtt_client.client.loop_forever()
-
-def ReadCosData():
-    topic2 = "/test/cos"
-    mqtt_client = mq(topic2)
-    mqtt_client.client.connect("8.140.157.208", 8083, 60)
-    mqtt_client.client.subscribe(topic2, 0)
-    mqtt_client.client.loop_forever()
-
-def print_time(threadName, delay):
-    count = 0
-    while count < 100:
-        if count % 10 == 0:
-            cache.set('messages','This is a test number:{}!'.format(count),10)
-        time.sleep(delay)
-        count += 1
-        cache.set('messages', 'This is a test number:{}!'.format(count), 10)
-        print ("%s: %s , %s" %(threadName, time.ctime(time.time()),count))
-
-# 创建两个线程
-try:
-   #_thread.start_new_thread( print_time, ("Thread-1", 2, ) )
-   _thread.start_new_thread(ReadSinData, ())
-   _thread.start_new_thread(ReadCosData, ())
-   #_thread.start_new_thread(ReadMqttData, ('/test/sawtooth'))
-
-except:
-   print ("Error: 无法启动线程")
-'''
 
 logger = logging.getLogger(__name__)
 
 # Create your views here.
 @login_required(login_url='accounts/login/')
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-    else:
-        messages.info(request,cache.get('messages'))
-        messages.warning(request, 'This is a test Warning!')
-        messages.error(request, 'This is a test Error!')
+    messages.info(request,'This is a test Message!')
+    messages.warning(request, 'This is a test Warning!')
+    messages.error(request, 'This is a test Error!')
 
-        return render(request, 'home/home.html')
+    return render(request, 'home/home.html')
 
 @login_required(login_url='accounts/login/')
 def AutoUpdate(request):
