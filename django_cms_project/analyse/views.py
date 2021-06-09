@@ -23,8 +23,6 @@ class Plot_fft(TemplateView):
     template_name = 'fft.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        #fft.generateData(fft)
         x_dataset = np.linspace(0,10,100)
         y_dataset = cache.get('/test/sin')
         tranform = fft(x_dataset,'Time',y_dataset,'Vibration')

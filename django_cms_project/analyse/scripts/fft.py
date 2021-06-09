@@ -47,12 +47,12 @@ class FastFourierTransformation:
         )
         fig = go.Figure(data=data, layout=layout)
         plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-        logger.info("Plotting number of points {}.".format(len(x_data)))
         return plot_div
 
 
     def plot_fft(self):
         size = len(self.x_dataset)
+        print(size)
         periode = 0.1
         F = fftpack.fft(self.y_dataset)
         f = fftpack.fftfreq(size, periode)
@@ -86,7 +86,6 @@ class FastFourierTransformation:
         fig.add_trace(trace2, row=2, col=1)
 
         plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-        logger.info("Plotting number of points {}.".format(len(x_data)))
         return plot_div
 
 if __name__ == "__main__":
