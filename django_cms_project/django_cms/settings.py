@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+mimetypes.add_type("text/javascript", ".js", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '8q*6bt)_zi%%#%f1e&scu%!%h^5an1(=l+7wyg)8clcwib$)x!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['8.140.157.208','51.116.185.53','www.intelcms.com','www.meywf.com','localhost']
 
@@ -166,6 +169,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # AUTH_USER_MODEL = 'UserManagement.MyUser'
 
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
+LOGIN_REDIRECT_URL = '/home'
+
 # 设置允许保存session
 SESSION_SAVE_EVERY_REQUEST = False
 # 设置session存放在缓存中
@@ -173,9 +180,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # 使用默认选项的缓存设置存放session
 SESSION_CACHE_ALIAS = "default"
 # 设置session过期时间,关闭浏览器时session过期(cookies) 和设置固定时间后过期 只能二选一
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # 30分钟后session过期, 只能和关闭时浏览器失效 二选一
-SESSION_COOKIE_AGE=60
+#SESSION_COOKIE_AGE=60
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -229,6 +236,7 @@ STATIC_ROOT = 'static'
 STATICFILES_DIRS  = [
     os.path.join(BASE_DIR,'django_cms/static')
 ]
+
 from django.contrib import messages
 
 MESSAGE_TAGS = {

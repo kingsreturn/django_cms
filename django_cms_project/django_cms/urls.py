@@ -15,10 +15,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.views.static import serve
 
-from django.urls import path, include
+from django.urls import path, include,re_path
 from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets, routers
+from django.conf.urls import url
+
+from django.conf import settings
+import os
+from django.views.static import serve as staticserve
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -38,6 +44,8 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 
+
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
@@ -55,3 +63,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
+if not settings.DEBUG:
+    urlpatterns += [
+        url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    ]
