@@ -12,9 +12,3 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 def test(request):
     return render(request, 'test.html')
 
-class UploadFile(TemplateView):
-    template_name = 'upload.html'
-
-def read_csv_view(request):
-    print('file is sending')
-    return HttpResponse()
