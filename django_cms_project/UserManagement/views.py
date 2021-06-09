@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 #from .forms import RegisterForm
 import hashlib
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser,User
 from django.contrib.auth import authenticate,get_user_model,login,logout,get_user
 from .forms import UserLoginForm,UserRegisterForm
 from django.views.decorators.csrf import csrf_exempt
@@ -19,19 +19,26 @@ from django.contrib.auth.decorators import login_required
 def login_view(request):
     next = request.GET.get('next')
     form =UserLoginForm(request.POST or None)
+    message=''
     if form.is_valid():
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        user = authenticate(username=username,password=password)
-        login(request,user)
-        if next:
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request,user)
             return redirect(next)
         else:
-            return redirect('/home')
+            return redirect('/datasetlist')
+        #user = authenticate(username=username,password=password)
+        #login(request,user)
+        #if next:
+            #return redirect(next)
+        #else:
+            #return redirect('/home')
     context = {
         'form': form,
     }
-    return render(request,'users/login.html',context)
+    return render(request,'login.html',locals())
 
 
 def index(request):
@@ -63,7 +70,7 @@ def logout_view(request):
     logout(request)
     request.session.flush()
     print('you are log out from cms!')
-    request.user = AnonymousUser
+    #request.user = AnonymousUser
     return render(request,'logout.html')
 
 def hash_code(s, salt='django'):
@@ -78,7 +85,10 @@ def userlist(request):
     result = User.objects.all()
     #template = Template('userlist.html')
     #html = template.render(Context({'content': result}))
-    return render(request,'userlist.html',{'content':result})
+    context = {
+        'content':result,
+    }
+    return render(request,'userlist.html',context=context)
 
 def adduser(request):
     return render(request,'todo.html')
