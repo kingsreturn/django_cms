@@ -43,12 +43,13 @@ class Influxdb:
 
         #print('Write Data completed!')
 
-    def Query(self,measurement,protocol,name):
-        query = 'from(bucket: "django-cms") |> range(start: -10m)' \
+    def Query(self,measurement,protocol,name,start,end):
+        query = 'from(bucket: "django-cms") |> range(start: {}m,stop: {}m)' \
                 '|> filter(fn:(r) => r._measurement == \"{}\")' \
                 '|> filter(fn: (r) => r.protocol == \"{}\")' \
-                '|> filter(fn:(r) => r._field == \"{}\")'.format(measurement,protocol,name)
+                '|> filter(fn:(r) => r._field == \"{}\")'.format(start,end,measurement,protocol,name)
         result = self.client.query_api().query(query)
+        #print(result)
         dataset = []
         for table in result:
             for row in table.records:
@@ -72,7 +73,27 @@ if __name__ == "__main__":
     result = _db_client.ConnnectDatabase()
     print(result)
     #_db_client.WriteDatapoint('tem','opc','value',30)
-    _db_client.WriteDataset('tem', 'opc', 'value3', [1,2,3,4,6,7,8,9])
+    #_db_client.WriteDataset('tem', 'opc', 'value3', [1,2,3,4,6,7,8,9])
     #time.sleep(5)
-    dataset = _db_client.Query('tem','opc','value3')
+    dataset = _db_client.Query('sensor','mqtt','numValue')
     print(dataset)
+
+    url = "http://8.140.157.208:8086"
+    token = "vqB03SdNF2KDD5MEPSDnS3Tw2cy4BJUppr7BzmbAg_e8Kei8aEwIOuaaE2_of99uIWiVkCUm5aUnI_sefVSRIw=="
+    org = "IWM"
+    bucket = 'django-cms'
+
+'''
+    client = InfluxDBClient(url=url, token=token, org=org)
+    query = 'from(bucket: "django-cms") |> range(start: -5m)' \
+            '|> filter(fn:(r) => r._measurement == \"{}\")' \
+            '|> filter(fn: (r) => r.protocol == \"{}\")' \
+            '|> filter(fn:(r) => r._field == \"{}\")'.format('sensor','mqtt','numValue')
+    result = client.query_api().query(query)
+    print(result)
+    dataset = []
+    for table in result:
+        for row in table.records:
+            dataset.append(row.get_value())
+    print(dataset)
+'''

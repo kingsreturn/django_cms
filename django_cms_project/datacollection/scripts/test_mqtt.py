@@ -6,7 +6,6 @@ import json
 import numpy as np
 from Influxdb import Influxdb
 import time
-from queue import Queue
 
 class Mqtt():
     def __init__(self,address,server,port):
@@ -16,10 +15,9 @@ class Mqtt():
         self.address=address
         self.client = mqtt.Client(self.address,transport="websockets")
         self.client.on_connect = self.on_connect
-        self.client.on_message = self.Get_Data
+        self.client.on_message = self.SubscribeData
         self.client.on_disconnect=self.on_disconnect()
-        #self.Data=list(range(0,100,1))
-        self.Data = Queue(100)
+        self.Data=list(range(0,100,1))
         self.interval=3
         self.count = 0
         self.influxdb = Influxdb()
@@ -36,27 +34,18 @@ class Mqtt():
         return result
 
     # call back function when new message publish to topic
-    def Get_Data(self,client, userdata, msg):
-        if self.Data.full():
-            self.Data.get
-
+    def SubscribeData(self,client, userdata, msg):
         self.count+=1
         value = float(msg.payload.decode("utf-8"))
-        self.Data.put(value)
-        #print( self.address + ' '+str(value))
-        if self.count==10:
+        print(self.address + ': '+str(value))
+        if self.count==40:
             self.count=0
-            dataset = self.Data
-            array= []
-            while not dataset.empty():
-                array.append(dataset.get())
-            print(array)
-
-            #del self.Data[0:40]
+            del self.Data[0:40]
             #cache.set(self.address,self.Data,10)
             #cache.set(self.address+'/value',value,10)
-            #self.influxdb.WriteDataset('sensor',self.protocol,self.address,self.Data[0:40])
-        #self.Data.append(value)
+            #print(self.Data[0:40])
+            #self.StoreData(self.Data[0:40])
+        self.Data.append(round(value,2))
         return str(msg.payload.decode("utf-8"))
 
     # call back function when disconnected to broker
@@ -66,6 +55,12 @@ class Mqtt():
     # call back function when connected to broker
     def on_connect(self,client, userdata, flags, rc):
         print(f"Connected with result code {rc}")
+
+    def StoreData(self,dataset):
+        try:
+            self.influxdb.WriteDataset('sensor',self.protocol,self.address,dataset)
+        except:
+            print(self.address + ' failed to write to Database!')
 
 def on_publish(client, obj, mid):
     print("mid: " + str(mid))
@@ -80,16 +75,7 @@ def on_log(client, obj, level, string):
 if __name__ == '__main__':
     topic1= "/test/sin"
     topic2= "/test/cos"
-    q=Queue(4)
-    q.put(123)
-    q.put(1234)
-    q.put(1235)
-    q.put(1236)
-    #q.put(1238)
-    print(q.get())
     client1 = Mqtt("/test/sin","8.140.157.208", 8083)
-    #client2 = Mqtt("/test/cos","8.140.157.208", 8083)
-    #time.sleep(3)
-    #client1.client.disconnect()
-    #client2.client.disconnect()
-
+    client2 = Mqtt("/test/cos","8.140.157.208", 8083)
+    time.sleep(30)
+    client1.client.disconnect()

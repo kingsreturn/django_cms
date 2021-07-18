@@ -59,33 +59,53 @@ class FastFourierTransformation:
         mask = np.where(f >= 0)
 
         x_data = f[mask]
-        y_data1 = np.log(abs(F[mask]))
-        y_data2 = abs(F[mask]) / 100
+        y_data1 = abs(F[mask]) / 100
+        y_data2 = np.log(abs(F[mask]))
+
 
         trace1 = go.Scatter(
             x=x_data,
             y=y_data1,
-            name="log(|F|)"
+            name="|F|",
         )
         trace2 = go.Scatter(
             x=x_data,
             y=y_data2,
-            name="|F|",
-            #xaxis='frequency (Hz)'
+            name="log(|F|)",
         )
 
         fig = make_subplots(
             rows=2, cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
+            shared_xaxes=False,
+            vertical_spacing=0.08,
             specs=[[{"type": "scatter"}],
                    [{"type": "scatter"}]]
         )
 
-        fig.add_trace(trace1,row=1, col=1)
-        fig.add_trace(trace2, row=2, col=1)
+        fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
 
-        plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+        fig.add_trace(trace1,row=1, col=1)
+        #fig.add_trace(trace2, row=2, col=1)
+
+        fig.update_layout(
+            height=600,
+            showlegend=False,
+            xaxis_title='Frequency (Hz)',
+            yaxis_title='Amplitude',
+            title_font={
+                'family': "Arial",
+                'size': 34,
+            },
+            title={
+                'text': "Fast Fourier Method",
+                'y':0.95,
+                'x':0.08,
+                'xanchor': 'left',
+                'yanchor': 'top'
+            }
+        )
+
+        plot_div = plot(fig,output_type='div',include_plotlyjs=False)
         return plot_div
 
 if __name__ == "__main__":

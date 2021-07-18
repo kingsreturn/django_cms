@@ -1,11 +1,6 @@
-#from home.dash_apps.finished_apps.Datencollection import opc
-import _thread
-import time
-import datetime
 from opcua import Client
-#from home import models
 #from . import Influxdb
-from .Datamodel import DataModel
+#from .Datamodel import DataModel
 from .AbstractClass import Collection
 import time
 import datetime
@@ -53,7 +48,7 @@ class Opc(Collection):
 
         try:
             client.connect()
-            opc = DataModel()
+            #opc = DataModel()
             val = client.get_node(self.NodeId)
             #opc.name = self.VariableName
             opc.value = val.get_value()
@@ -93,7 +88,7 @@ class Opc(Collection):
 
 
 if __name__ == "__main__":
-    node = "ns=2;s=Demo.Dynamic.Scalar.Double"
+    node = 'ns=2;s=Demo.Static.Scalar.Double'
     ServerName = 'opc.tcp://localhost:48010'
     opc = Opc(ServerName)
     opc.Subscribe_Node(node)

@@ -9,7 +9,7 @@ class Influxdb:
         self.token="vqB03SdNF2KDD5MEPSDnS3Tw2cy4BJUppr7BzmbAg_e8Kei8aEwIOuaaE2_of99uIWiVkCUm5aUnI_sefVSRIw=="
         self.org="IWM"
 
-    # You can generate a Token from the "Tokens Tab" in the UI
+    # Connect to the database
     def ConnnectDatabase(self):
         try:
             self.client = InfluxDBClient(url=self.url, token=self.token,org=self.org)
@@ -18,6 +18,7 @@ class Influxdb:
             print(Exception.args)
             return False
 
+    # write Data point to Database
     def WriteDatapoint(self,measurement,protocol,Name,Value):
         org = "IWM"
         bucket='django_cms'
@@ -26,6 +27,7 @@ class Influxdb:
         _write_api.write(bucket=bucket, org=org, record=_point1)
         print('Write Data success!')
 
+    # write Data set to Database
     def WriteDataset(self,measurement,protocol,name,dataset):
         org = "IWM"
         bucket='django-cms'
@@ -41,6 +43,7 @@ class Influxdb:
 
         #print('Write Data completed!')
 
+    # Query data from Database
     def Query(self,measurement,protocol,name):
         org = "IWM"
         bucket = "django-cms"

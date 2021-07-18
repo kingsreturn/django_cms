@@ -37,14 +37,14 @@ class Mqtt():
     def SubscribeData(self,client, userdata, msg):
         self.count+=1
         value = float(msg.payload.decode("utf-8"))
-        if self.count==40:
+        if self.count==10:
             self.count=0
-            del self.Data[0:40]
+            del self.Data[0:10]
             cache.set(self.address,self.Data,10)
             cache.set(self.address+'/value',value,10)
             #print(self.Data[0:40])
-            self.StoreData(self.Data[0:40])
-        self.Data.append(round(value,2))
+            self.StoreData(self.Data[0:10])
+        self.Data.append(round(value,3))
         return str(msg.payload.decode("utf-8"))
 
     # call back function when disconnected to broker

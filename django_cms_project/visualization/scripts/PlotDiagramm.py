@@ -18,104 +18,64 @@ from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
+class PlotDiagramm():
+    def __init__(self,title,x_dataset,x_name,y_dataset,y_name):
+        self.x_data = x_dataset
+        self.y_data = y_dataset
+        self.x_name = x_name
+        self.y_name = y_name
+        self.title = title
 
-def plot_linie(title,x_dataset,x_name,y_dataset,y_name):
-    x_data = np.array(x_dataset)
-    y_data = np.array(y_dataset)
+    def plot_linie(self):
+        row=self.x_data.ndim
 
-    row=x_data.ndim
+        fig = go.Figure()
 
-    fig = go.Figure()
 
-    for index in range(0,row):
-        trace = go.scatter(
-            x=x_data[index],
-            y=y_data[index],
-            mode='line',
-            name=y_name[index],
+        trace = go.Scatter(
+            x=self.x_data,
+            y=self.y_data,
+            mode='lines',
+            name=self.y_name
         )
         fig.add_trace(trace)
 
-    # Edit the layout
-    fig.update_layout(title=title,
-                      xaxis_title=x_name[0],
-                      yaxis_title=y_name)
+        # Edit the layout
+        fig.update_layout(title=self.title,
+                          xaxis_title=self.x_name,
+                          yaxis_title=self.y_name)
 
-    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-    logger.info("Plotting number of points {}.".format(len(x_dataset)))
-    return plot_div
+        plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+        logger.info("Plotting number of points {}.".format(len(self.x_data)))
+        return plot_div
 
-def plot_punkt(title,x_dataset,x_name,y_dataset,y_name):
+    def plot_punkt(self,title,x_dataset,x_name,y_dataset,y_name):
 
-    trace1 = go.Scatter(
-        x=x_dataset,
-        y=y_dataset
-    )
-
-    data = [trace1]
-    layout = go.Layout(
-        xaxis=dict(
-            autorange=True
-        ),
-        yaxis=dict(
-            autorange=True
+        trace1 = go.Scatter(
+            x=x_dataset,
+            y=y_dataset
         )
-    )
-    fig = go.Figure(data=data, layout=layout)
 
-    # Edit the layout
-    fig.update_layout(title=title,
-                      xaxis_title=x_name,
-                      yaxis_title=y_name)
+        data = [trace1]
+        layout = go.Layout(
+            xaxis=dict(
+                autorange=True
+            ),
+            yaxis=dict(
+                autorange=True
+            )
+        )
+        fig = go.Figure(data=data, layout=layout)
 
-    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-    logger.info("Plotting number of points {}.".format(len(x_dataset)))
-    return plot_div
+        # Edit the layout
+        fig.update_layout(title=title,
+                          xaxis_title=x_name,
+                          yaxis_title=y_name)
 
+        plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+        logger.info("Plotting number of points {}.".format(len(x_dataset)))
+        return plot_div
 
-def plot_fft(self):
-    size = len(self.x_dataset)
-    print(size)
-    periode = 0.1
-    F = fftpack.fft(self.y_dataset)
-    f = fftpack.fftfreq(size, periode)
-    mask = np.where(f >= 0)
-
-    x_data = f[mask]
-    y_data1 = np.log(abs(F[mask]))
-    y_data2 = abs(F[mask]) / 100
-
-    trace1 = go.Scatter(
-        x=x_data,
-        y=y_data1,
-        name="log(|F|)"
-    )
-    trace2 = go.Scatter(
-        x=x_data,
-        y=y_data2,
-        name="|F|",
-        #xaxis='frequency (Hz)'
-    )
-
-    fig = make_subplots(
-        rows=2, cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.03,
-        specs=[[{"type": "scatter"}],
-               [{"type": "scatter"}]]
-    )
-
-    fig.add_trace(trace1,row=1, col=1)
-    fig.add_trace(trace2, row=2, col=1)
-
-    # Edit the layout
-    fig.update_layout(title='Average High and Low Temperatures in New York',
-                      xaxis_title=x_axis,
-                      yaxis_title='Temperature (degrees F)')
-
-    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-    logger.info("Plotting number of points {}.".format(len(x_data)))
-    return plot_div
 
 if __name__ == "__main__":
     FastFourierTransformation.generateData()

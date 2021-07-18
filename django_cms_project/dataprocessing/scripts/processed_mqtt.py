@@ -57,6 +57,7 @@ def update_graph_live(n):
     # Collect data
     origin_sin= Centralized(cache.get('/test/sin'),'sin')
     origin_cos= Centralized(cache.get('/test/cos'),'cos')
+    opc_sin = cache.get('/opc/sin')
 
 
     data['Drehmoment'] = origin_sin.GenerateProcessedData()

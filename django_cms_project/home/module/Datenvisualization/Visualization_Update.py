@@ -8,11 +8,11 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
 from django.core.cache import cache
-# import dash
+import dash
 
 # from django_cms.home.dash_apps.finished_apps.Datencollection import opc as op
-from home.module.Datencollection.opc import Opc as opc
-from home.module.Datenprocessing.Datenprocessing import Datenprocessing as process
+#from home.module.Datencollection.opc import Opc as opc
+#from home.module.Datenprocessing.Datenprocessing import Datenprocessing as process
 
 
 nodeDo = "ns=2;s=Demo.Dynamic.Scalar.Double"
@@ -23,27 +23,27 @@ Server = 'opc.tcp://localhost:48010'
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash('autoupdate', external_stylesheets=external_stylesheets)
-# app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
+#app = dash.Dash('SecondExample', external_stylesheets=external_stylesheets)
 
 data = {
     'time': [],
-    'Drehmoment': [],
-    'Position': [],
-    'Kraft': []
+    'sin': [],
+    'cos': [],
+    'sawtooth': []
 }
 
 # satellite = Orbital('TERRA')
 num = 0
 app.layout = html.Div(
     html.Div([
-        html.Div(id='live-update-text'),
+        html.Div(style={'marginLeft':70},id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
             id='interval-component',
             disabled=False,
-            interval=2 * 1000,  # in milliseconds
+            interval=0.5 * 1000,  # in milliseconds
             n_intervals=0,
-            max_intervals=100
+            max_intervals=400
         )
     ])
 )
@@ -52,18 +52,18 @@ app.layout = html.Div(
 @app.callback(Output('live-update-text', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_metrics(n):
-    #Doubledata = opc(server, address1,'double')
-    #Floatdata = opc(server, address2,'float')
-    #lon = Doubledata.GetData().value
-    #lat = Floatdata.GetData().value
-    lon = cache.get('/test/sin/value')
-    lat = cache.get('/test/cos/value')
-    print(lon)
+    sin = cache.get('/test/sin/value')
+    cos = cache.get('/test/cos/value')
+    sawtooth = cache.get('/test/sawtooth/value')
+    print(sin)
 
-    style = {'padding': '5px', 'fontSize': '16px'}
+    style = {'padding': '5px', 'fontSize': '30px'}
     return [
-        html.Span('Drehmoment: {0:.2f} N/m'.format(lon), style=style),
-        html.Span('Position: {0:.2f} m'.format(lat), style=style),
+        html.Span('Real Time Signal Value: ', style={'padding': '5px','fontSize':'34px'}),
+        html.Br(),
+        html.Span('sin : {0:.2f}'.format(sin), style=style),
+        html.Span('cos : {0:.2f}'.format(cos), style=style),
+        html.Span('sawtooth : {0:.2f}'.format(sawtooth), style=style),
     ]
 
 
@@ -71,27 +71,19 @@ def update_metrics(n):
 @app.callback(Output('live-update-graph', 'figure'),
               [Input('interval-component', 'n_intervals')])
 def update_graph_live(n):
-    # Collect data
-    #Doubledata = opc(server, address1,'double')
-    #Floatdata = opc(server, address2,'float')
-
-
-    #lon = Doubledata.GetData().value
-    #lat = Floatdata.GetData().value
-    # alt = Intdata.getData()
-
-    data['Drehmoment'] = cache.get('/test/sin')
-    data['Position'] = cache.get('/test/cos')
+    data['sin'] = cache.get('/test/sin')
+    data['cos'] = cache.get('/test/cos')
     data['time'] = np.linspace(0, 10, 100)
-    #average = process(data['Drehmoment'], data['Position'])
-    #data['Kraft'] = average.Average(average.CombineData())
+    #average = process(data['sin'], data['cos'])
+    data['sawtooth'] = cache.get('/test/sawtooth')
 
     # Create the graph with subplots
     fig = make_subplots(
-        rows=2, cols=1,
+        rows=3, cols=1,
         shared_xaxes=False,
-        vertical_spacing=0.03,
+        vertical_spacing=0.1,
         specs=[[{"type": "scatter"}],
+               [{"type": "scatter"}],
                [{"type": "scatter"}]]
     )
 
@@ -100,25 +92,45 @@ def update_graph_live(n):
     fig.add_trace(
         go.Scatter(
             x=data['time'],
-            y=data['Drehmoment'],
+            y=data['sin'],
             mode="lines",
-            name="Drehmoment"
+            name="sin"
         ),
         row=1, col=1
-    )
+    ),
     fig.add_trace(
         go.Scatter(
             x=data['time'],
-            y=data['Position'],
+            y=data['cos'],
             mode="lines",
-            name="Position"
+            name="cos"
         ),
         row=2, col=1
+    ),
+    fig.add_trace(
+        go.Scatter(
+            x=data['time'],
+            y=data['sawtooth'],
+            mode="lines",
+            name="cos"
+        ),
+        row=3, col=1
     )
     fig.update_layout(
         height=800,
         showlegend=False,
-        title_text="Mqtt Test Signal",
+        title_font={
+            'family': "Arial",
+            'size': 34,
+        },
+        title={
+            'text': "MQTT Test Signal",
+            # 'title_font_size': 20,
+            'y': 0.95,
+            'x': 0.08,
+            'xanchor': 'left',
+            'yanchor': 'top'
+        }
     )
     return fig
 

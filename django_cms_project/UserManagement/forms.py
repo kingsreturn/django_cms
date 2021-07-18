@@ -30,7 +30,7 @@ class UserLoginForm(forms.Form):
 # user register form
 class UserRegisterForm(forms.ModelForm):
     role = (
-        ('administrator', "administrator"),
+        ('developer', "developer"),
         ('maintainer', "maintainer"),
         ('user', "user"),
     )

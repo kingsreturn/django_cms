@@ -35,6 +35,13 @@ def print_time(threadName, delay):
         print ("%s: %s , %s" %(threadName, time.ctime(time.time()),count))
 
 
+# Create data collection thread
+try:
+    client1 = mq("/test/sin", "8.140.157.208", 8083)
+    client2 = mq("/test/cos", "8.140.157.208", 8083)
+    client3 = mq("/test/sawtooth", "8.140.157.208", 8083)
+except:
+    print("Error: Thread start failed!")
 
 
 # Create your views here.
@@ -69,24 +76,6 @@ def adddata(request):
 
 #@login_required()
 def datasetlist(request):
-    # 创建两个线程
-    try:
-        # _thread.start_new_thread(ReadSinData, ())
-        # _thread.start_new_thread(ReadCosData, ())
-        # thread1 = threading.Thread(target=ReadData,args=("/test/sin",))
-        # thread1.start()
-        # thread2 = threading.Thread(target=ReadData, args=("/test/cos",))
-        # thread2.start()
-        client1 = mq("/test/sin", "8.140.157.208", 8083)
-        client2 = mq("/test/cos", "8.140.157.208", 8083)
-    # _thread.start_new_thread(ReadData, ("/test/sin"))
-    # time.sleep(1)
-    # _thread.start_new_thread(ReadData, ("/test/cos"))
-
-    except:
-        print("Error: Thread start failed!")
-
-
     list = DataQuelle.objects.all()
     number = list.count()
     context = {
