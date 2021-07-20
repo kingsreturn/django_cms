@@ -53,8 +53,14 @@ INSTALLED_APPS = [
     'UserManagement',
     'visualization',
     'dataanalysis',
-    'dataprocessing'
+    'dataprocessing',
 ]
+
+# set data collection in background
+#CRONJOBS = (
+    #('*/5 * * * *', 'datacollection.views.collectdata'),
+#)
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -102,7 +108,7 @@ WSGI_APPLICATION = 'django_cms.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -110,7 +116,7 @@ DATABASES = {
     }
 }
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -120,7 +126,7 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -130,7 +136,7 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
-
+'''
 '''
 CACHES = {
     'default': {

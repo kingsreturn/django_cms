@@ -6,8 +6,8 @@ from home.module.Datenvisualization import example
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-    path('home', views.home,name='home'),
-    path('dashboard', views.AutoUpdate,name='autoupdate'),
+    #path('home', views.home,name='home'),
+    #path('dashboard', views.AutoUpdate,name='autoupdate'),
     #path('graph',views.graph,name = 'graph'),
     path('graph',views.Plot_diagramm.as_view(),name = 'graph'),
     path('plot',views.plot,name = 'plot'),

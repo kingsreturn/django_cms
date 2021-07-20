@@ -59,7 +59,7 @@ class LimitMonitoring:
             yaxis=dict(
                 autorange=True
             ),
-            title= 'Value Above Limit:' + array,
+            #title= 'Value Above Limit:' + array,
         )
         fig = go.Figure(layout=layout)
 
@@ -67,7 +67,7 @@ class LimitMonitoring:
             x=x_data,
             y=y_data,
             mode='lines',
-            name="Vibration"
+            name="Test Signal"
         )
         trace2 = go.Scatter(
             x=x_data,
@@ -83,7 +83,7 @@ class LimitMonitoring:
 
         plot_div = plot(fig, output_type='div', include_plotlyjs=False)
         logger.info("Plotting number of points {}.".format(len(x_data)))
-        return plot_div
+        return plot_div,array
 
 if __name__ == "__main__":
     pass

@@ -40,7 +40,7 @@ def home(request):
 
 @login_required(login_url='accounts/login/')
 def AutoUpdate(request):
-    return render(request, 'home/autoupdate.html')
+    return render(request, 'home/dashboard.html')
 
 
 @login_required(login_url='accounts/login/')

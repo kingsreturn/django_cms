@@ -13,44 +13,87 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.core.files.storage import FileSystemStorage
-
-
-def ReadSinData():
-    mq("/test/sin", "8.140.157.208", 8083)
-
-def ReadCosData():
-    mq("/test/cos","8.140.157.208", 8083)
-
-def ReadData(topic):
-    mq(topic,"8.140.157.208", 8083)
-
-def print_time(threadName, delay):
-    count = 0
-    while count < 100:
-        if count % 10 == 0:
-            cache.set('messages','This is a test number:{}!'.format(count),10)
-        time.sleep(delay)
-        count += 1
-        cache.set('messages', 'This is a test number:{}!'.format(count), 10)
-        print ("%s: %s , %s" %(threadName, time.ctime(time.time()),count))
+from django.shortcuts import redirect
 
 
 # Create data collection thread
-try:
-    client1 = mq("/test/sin", "8.140.157.208", 8083)
-    client2 = mq("/test/cos", "8.140.157.208", 8083)
-    client3 = mq("/test/sawtooth", "8.140.157.208", 8083)
-except:
-    print("Error: Thread start failed!")
+def collectdata():
+    try:
+        client1 = mq("/test/sin", "8.140.157.208", 8083)
+        client2 = mq("/test/cos", "8.140.157.208", 8083)
+        client3 = mq("/test/sawtooth", "8.140.157.208", 8083)
+    except:
+        print("Error: Thread start failed!")
+
+class myThread(threading.Thread):   #继承父类threading.Thread
+    def __init__(self, threadID, address, client):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.address = address
+        self.status = True
+        #self.client = client
+    def run(self):
+        if hasattr(self, 'client'):
+            self.client.on_disconnect()
+            time.sleep(2)
+        while self.status:
+            print("Starting " + self.address)
+            self.client = mq(self.address, "8.140.157.208", 8083)
+            time.sleep(180)
+            self.client.on_disconnect()
+            print("Exiting " + self.address)
+
+    def stop(self):
+        self.client.on_disconnect()
+
+# create data collection thread
+thread1 = myThread(1, "/test/sin", 1)
+thread2 = myThread(2, "/test/cos", 2)
+thread3 = myThread(2, "/test/sawtooth", 3)
+
+def collectdata():
+    thread1 = myThread(1, "/test/sin", 1)
+    thread2 = myThread(2, "/test/cos", 2)
+    thread3 = myThread(2, "/test/sawtooth", 3)
+    # start data collection thread
+    try:
+        thread1.start()
+        thread2.start()
+        thread3.start()
+        print('Thread start success!')
+    except:
+        print("Error: Thread start failed!")
+
+def stopcollect():
+    try:
+        thread1.stop()
+        thread2.stop()
+        thread3.stop()
+        print('Thread stop success!')
+    except:
+        print('Thread stop failed!')
 
 
-# Create your views here.
+collectdata()
+
+def home(request):
+    #stopcollect()
+    #time.sleep(10)
+    #collectdata()
+    return redirect(dashboard)
+
 #@login_required()
 def Datasets(request):
     return render(request, 'dataset.html')
 
 def test(request):
     return render(request,'test.html')
+
+@login_required(login_url='accounts/login/')
+def dashboard(request):
+    #collectdata()
+    #time.sleep(5)
+    return render(request, 'dashboard.html')
 
 @csrf_exempt
 #@login_required()
@@ -82,10 +125,6 @@ def datasetlist(request):
         'content': list
     }
     return render(request,'datasetlist.html',context=context)
-
-def dashboard(request):
-    pass
-    return render(request,'datasetlist.html')
 
 class UploadFile(TemplateView):
     template_name = 'upload.html'

@@ -68,12 +68,13 @@ def update_graph_live(n):
     fig = make_subplots(
         rows=2, cols=1,
         shared_xaxes=False,
-        vertical_spacing=0.03,
+        vertical_spacing=0.2,
+        subplot_titles=('Sin Signal', 'Cos Signal'),
         specs=[[{"type": "scatter"}],
                [{"type": "scatter"}]]
     )
 
-    fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
+    #fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
 
     fig.add_trace(
         go.Scatter(
@@ -93,12 +94,17 @@ def update_graph_live(n):
         ),
         row=2, col=1
     )
+    fig['layout']['xaxis']['title'] = 'Time (s)'
+    fig['layout']['xaxis2']['title'] = 'Time (s)'
+    fig['layout']['yaxis']['title'] = 'Sin Signal'
+    fig['layout']['yaxis2']['title'] = 'Cos Signal'
+
     fig.update_layout(
-        height=800,
+        height=600,
         showlegend=False,
         title_text="Mqtt Test Signal",
-        xaxis_title='Time (s)',
-        yaxis_title='Sinus signal'
+        #xaxis_title='Time (s)',
+        #yaxis_title='Sinus signal'
     )
     return fig
 

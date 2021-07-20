@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from .scripts.fft import FastFourierTransformation as fft
 from .scripts.limit_monitor import LimitMonitoring as lm
 import numpy as np
+from django.contrib.messages.views import SuccessMessageMixin
 
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
@@ -28,6 +29,7 @@ class Plot_fft(TemplateView):
         tranform = fft(x_dataset,'Time',y_dataset,'Vibration')
         context = super(Plot_fft, self).get_context_data(**kwargs)
         context['plot'] = tranform.plot_fft()
+        messages.add_message(self.request, messages.WARNING, 'Detected Frequency : 0.5Hz')
         return context
 
 def test(request):
@@ -48,5 +50,6 @@ class limit_monitor(TemplateView):
         y_dataset = cache.get('/test/sin')
         limit = lm(x_dataset,'Time',y_dataset,'Vibration')
         context = super(limit_monitor, self).get_context_data(**kwargs)
-        context['plot'] = limit.plot_limit()
+        context['plot'],result= limit.plot_limit()
+        messages.add_message(self.request, messages.ERROR, 'Value Above Limit:' + result)
         return context

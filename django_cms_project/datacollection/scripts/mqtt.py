@@ -43,7 +43,7 @@ class Mqtt():
             cache.set(self.address,self.Data,10)
             cache.set(self.address+'/value',value,10)
             #print(self.Data[0:40])
-            self.StoreData(self.Data[0:10])
+            #self.StoreData(self.Data[0:10])
         self.Data.append(round(value,3))
         return str(msg.payload.decode("utf-8"))
 

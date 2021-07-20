@@ -11,6 +11,13 @@
   <h1>Limit Monitoring</h1>
 </div>
 <!-- /.container -->
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <div class="container">
   <div class="row" style="border: 1px solid black">
