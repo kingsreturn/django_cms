@@ -29,7 +29,7 @@ SECRET_KEY = '8q*6bt)_zi%%#%f1e&scu%!%h^5an1(=l+7wyg)8clcwib$)x!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8.140.157.208','51.116.185.53','www.intelcms.com','www.meywf.com','localhost']
+ALLOWED_HOSTS = ['8.140.157.208','51.116.185.53','www.intelcms.com','www.meywf.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -42,18 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'channels',
-    'channels_redis',
+    #'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    #'channels',
+    #'channels_redis',
     'rest_framework',
-    'users',
-    'captcha',
-    'plottemplate',
-    'datacollection',
-    'UserManagement',
-    'visualization',
-    'dataanalysis',
-    'dataprocessing',
+    #'users',
+    #'captcha',
+    #'plottemplate',
+    #'datacollection',
+    #'UserManagement',
+    #'visualization',
+    #'dataanalysis',
+    #'dataprocessing',
 ]
 
 # set data collection in background
@@ -73,8 +73,8 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 
-    'django_plotly_dash.middleware.BaseMiddleware',
-    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+    #'django_plotly_dash.middleware.BaseMiddleware',
+    #'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'django_cms.urls'
@@ -207,7 +207,7 @@ USE_TZ = True
 CRISPY_TEMPLATE_PACK = 'bootstap4'
 
 ASGI_APPLICATION = 'django_cms.routing.application'
-
+'''
 CHANNEL_LAYERS = {
     'default':{
         'BACKEND':'channels_redis.core.RedisChannelLayer',
@@ -222,8 +222,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django_plotly_dash.finders.DashAssetFinder',
     'django_plotly_dash.finders.DashComponentFinder'
-]
-
+]'''
 PLOTLY_COMPONENTS = [
     'dash_core_components',
     'dash_html_components',
