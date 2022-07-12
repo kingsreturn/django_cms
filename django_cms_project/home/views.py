@@ -1,14 +1,14 @@
 from django.shortcuts import render
-from plotly.offline import plot
-from plotly.graph_objs import Scatter
-from UserManagement.decorators import unauthenticated_user, allowed_users
+#from plotly.offline import plot
+#from plotly.graph_objs import Scatter
+#from UserManagement.decorators import unauthenticated_user, allowed_users
 import logging
 
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.views.generic import TemplateView
 
-from .module.Datenvisualization import Datavisualization as plots
-from .module.Datenanalyse.fft import FastFourierTransformation as fft
+#from .module.Datenvisualization import Datavisualization as plots
+#from .module.Datenanalyse.fft import FastFourierTransformation as fft
 #from .module.SignalSimulator import SignalSimulator as ss
 #from .module.Datenvisualization import Datavisualization as plot_diagramm
 from django.contrib.auth.decorators import login_required
@@ -24,7 +24,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import _thread
 import time
-from .module.Datencollection.mqtt import Mqtt as mq
+#from .module.Datencollection.mqtt import Mqtt as mq
 
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ def home(request):
 def AutoUpdate(request):
     return render(request, 'home/dashboard.html')
 
-
+'''
 @login_required(login_url='accounts/login/')
 def graph(requests):
     return render(requests, 'home/opc.html')
@@ -164,11 +164,7 @@ class PlotLiveView(TemplateView):
         context['plot'] = plots.plotLive()
         return context
 
-
 def plot_live_update(request):
-    '''
-    Handle ajax call to update the live plot
-    '''
     if request.is_ajax():
         logger.debug("Live plot updated...")
         data = plots.live_plot_get_data_serialized()
@@ -194,3 +190,4 @@ def warning(dataset,limit):
             warnstatus
     return warnstatus
 
+'''

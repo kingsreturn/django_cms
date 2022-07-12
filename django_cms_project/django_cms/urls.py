@@ -50,16 +50,16 @@ router.register(r'users', UserViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('datacollection.urls')),
+    #path('', include('datacollection.urls')),
     path('', include('home.urls')),
-    path('', include('dataanalysis.urls')),
-    path('', include('dataprocessing.urls')),
-    path('', include('visualization.urls')),
-    path('', include('users.urls')),
-    path('', include('plottemplate.urls')),
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
-    path('', include(router.urls)),
-    path('',include('UserManagement.urls')),
+    #path('', include('dataanalysis.urls')),
+    #path('', include('dataprocessing.urls')),
+    #path('', include('visualization.urls')),
+    #path('', include('users.urls')),
+    #path('', include('plottemplate.urls')),
+    #path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    #path('', include(router.urls)),
+    #path('',include('UserManagement.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
