@@ -19,6 +19,8 @@ mimetypes.add_type("text/javascript", ".js", True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -46,11 +48,10 @@ INSTALLED_APPS = [
     #'channels',
     #'channels_redis',
     'rest_framework',
-    #'users',
-    #'captcha',
-    #'plottemplate',
+    'users',
+    'plottemplate',
     #'datacollection',
-    #'UserManagement',
+    'UserManagement',
     #'visualization',
     #'dataanalysis',
     #'dataprocessing',
@@ -72,7 +73,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-
     #'django_plotly_dash.middleware.BaseMiddleware',
     #'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
@@ -135,19 +135,8 @@ DATABASES = {
         'PASSWORD': 'Django_cms123456',
         'HOST': 'localhost'
     }
-}
-'''
-'''
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-        'OPTIONS': {
-            'server_max_value_length': 1024 * 1024 * 100,
-        }
-    }
-}
-'''
+}'''
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',

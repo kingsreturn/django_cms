@@ -5,10 +5,13 @@ services:
     build:
       context: .
     ports:
-      - "8000:8088"
+      - "8000:8000"
+    expose:
+      - 8000
     volumes:
-      - ./django_cms:/django_cms
+      - .:/django_cms
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    tty: true
     environment:
       - DEBUG=1
 

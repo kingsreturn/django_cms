@@ -1,5 +1,4 @@
 from django import forms
-from captcha.fields import CaptchaField
 from django.contrib.auth import authenticate, get_user_model
 
 User = get_user_model()

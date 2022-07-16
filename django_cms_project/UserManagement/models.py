@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-'''
+
 from django.db import models
 
 from django.contrib.auth.models import (
@@ -76,7 +76,7 @@ class MyUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-'''
+
 '''
 class User(AbstractUser):
     # user information model
