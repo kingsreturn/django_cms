@@ -1,0 +1,119 @@
+{% load static %}
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home">
+                <div class="sidebar-brand-icon">
+                    <img class="img-responsive center-block" src="{% static 'img/cms.png'%}" alt="" width="72" height="57">
+                </div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Function
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            {% if request.user.is_staff %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
+                    aria-expanded="true" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Data Source</span>
+                </a>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Function:</h6>
+                        <a class="collapse-item" href="/adddata">Add Source</a>
+                        <a class="collapse-item" href="/datasetlist">Source list</a>
+                        <a class="collapse-item" href="/upload">Upload csv</a>
+                    </div>
+                </div>
+            </li>
+                
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Historical Data</span>
+                </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Function:</h6>
+                        <a class="collapse-item" href="/visulization/historicaldata">Historical Data</a>
+                    </div>
+                </div>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/processed" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Datenprocess</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Function:</h6>
+                        <!--<a class="collapse-item" href="/processed">list</a>-->
+                        <!--<a class="collapse-item" href="/processed/opc">opc</a>-->
+                        <a class="collapse-item" href="/processed/mqtt">mqtt</a>
+                    </div>
+                </div>
+            </li>
+
+
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/dataanalysis" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                        <span>Datenanalyse</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Function:</h6>
+                        <a class="collapse-item" href="/dataanalysis/fft">Fast Fourier Methode</a>
+                        <a class="collapse-item" href="/dataanalysis/limit_monitoring">Limit Monitoring</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+
+            {% if request.user.is_superuser %}
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                User management
+            </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/adduser">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Add User</span>
+                </a>
+            </li>
+                <li class="nav-item">
+                <a class="nav-link collapsed" href="/userlist">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>User list</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>

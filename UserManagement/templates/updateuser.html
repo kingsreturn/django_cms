@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+</head>
+<body>
+    <div id="changePasswordDiv" style="margin-left: 20px; margin-top: 20px;">
+         {% for foo in content %}
+            <div class="input-group" style="margin-bottom: 5px; width: 253px;">
+                <span class="input-group-addon" style="width: 80px;">用户名</span>
+                <input type="text" name="" id="loginUsername" value="{{ foo.username }}" class="form-control" readonly disabled/>
+            </div>
+        {% endfor %}
+        <div class="input-group" style="margin-bottom: 5px; width: 253px;">
+            <span class="input-group-addon" style="width: 80px;">旧密码</span>
+            <input type="password" name="oldPassword" id="oldPassword" class="form-control" />
+        </div>
+        <div class="input-group" style="margin-bottom: 5px; width: 253px;">
+            <span class="input-group-addon" style="width: 80px;">新密码</span>
+            <input type="password" name="newPassword" id="newPassword" class="form-control" />
+        </div>
+        <div class="input-group" style="margin-bottom: 5px; width: 253px;">
+            <span class="input-group-addon" style="width: 80px;">确认密码</span>
+            <input type="password" name="newPasswordAgain" id="newPasswordAgain" class="form-control" />
+        </div>
+        <div id="changePasswordAlert" class="alert alert-danger" role="alert" style="width: 30%; margin-bottom: 6px; display: none;"></div>
+        <button type="button" id="changePasswordBtn" class="btn btn-default" data-toggle="modal" data-target="#alertTip" data-whatever="重置密码？" style="width: 100px; margin-left: 70px;">提&nbsp;&nbsp;交</button>
+    </div>
+ <script type="text/javascript" src="{% static "/js/jquery-3.3.1.min.js" %}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#changePasswordBtn').click(function () {
+            var changePasswordAlert = '';
+            //$('#changePasswordAlert').hide();
+            if (!$('#oldPassword').val()) {
+                //changePasswordAlert += '**  旧密码不能为空！<br />';
+                alert('旧密码不能为空！');
+                return false;
+            }
+            if (!$('#newPassword').val()) {
+                //changePasswordAlert += '**  新密码不能为空！<br />';
+                alert('新密码不能为空！')
+                return false;
+            }
+            if (!$('#newPasswordAgain').val()) {
+                //changePasswordAlert += '**  确认密码不能为空！<br />';
+                alert('确认密码不能为空！')
+                return false;
+            }
+            if ($('#newPassword').val() != $('#newPasswordAgain').val()) {
+                //changePasswordAlert += '**  两次密码不一致！<br />';
+                alert('两次密码不一致!');
+                return false;
+            }
+            if ($('#oldPassword').val() == $('#newPasswordAgain').val()) {
+                //changePasswordAlert += '**  新密码和旧密码不能一样！<br />';
+                alert('新密码和旧密码不能一样！')
+                return false;
+            }
+            $.ajax({
+                url: '/changePassword/',
+                type: 'POST',
+                data: {
+                    username: $('#loginUsername').val(),
+                    oldPassword: $('#oldPassword').val(),
+                    newPassword: $('#newPassword').val()
+                },
+                success: function (data, textStatus) {
+                    if (data == 1) {
+                        alert('修改成功！');
+                        window.location.href = '/listUser';
+
+                    } else if (data == -1) {
+                        alert('旧密码错误！');
+
+                    } else if (data == 0) {
+                        alert('没有相关权限！');
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
