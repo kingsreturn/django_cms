@@ -10,7 +10,6 @@
 trigger:
 - main
 
-<<<<<<< HEAD
 pool:
   vmImage: ubuntu-latest
 strategy:
@@ -84,4 +83,3 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/django_cms_project/Dockerfile'
         tags: |
           $(tag)
->>>>>>> origin/main
