@@ -8,9 +8,6 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-  demands:
-    - docker
-    - java
 strategy:
   matrix:
     Python38:
