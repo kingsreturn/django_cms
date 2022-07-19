@@ -10,5 +10,6 @@ RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
 RUN pip install -r requirements.txt
 #EXPOSE 5000
 #RUN apk del .tmp
+CMD python manage.py runserver 0.0.0.0:8000
 
 
