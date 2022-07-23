@@ -6,7 +6,7 @@ import plotly.figure_factory as ff
 from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import numpy as np
+#import numpy as np
 from django.core.cache import cache
 import dash
 
@@ -73,7 +73,7 @@ def update_metrics(n):
 def update_graph_live(n):
     data['sin'] = cache.get('/test/sin')
     data['cos'] = cache.get('/test/cos')
-    data['time'] = np.linspace(0, 10, 100)
+    #data['time'] = np.linspace(0, 10, 100)
     #average = process(data['sin'], data['cos'])
     data['sawtooth'] = cache.get('/test/sawtooth')
 

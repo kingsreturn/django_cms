@@ -6,7 +6,8 @@ WORKDIR /django_cms
 COPY . /django_cms/
 #COPY ./requirements.txt /django_cms/requirements.txt
 # packages for uwisg module
-RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
+RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers g++
+RUN pip install --upgrade setuptools
 RUN pip install -r requirements.txt
 #EXPOSE 5000
 #RUN apk del .tmp
