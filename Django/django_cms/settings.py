@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    #'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     #'channels',
     #'channels_redis',
     'rest_framework',
@@ -73,8 +73,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-    #'django_plotly_dash.middleware.BaseMiddleware',
-    #'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'django_cms.urls'

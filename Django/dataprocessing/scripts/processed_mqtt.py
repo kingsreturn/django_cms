@@ -5,7 +5,7 @@ from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from dash import Dash
-#import numpy as np
+import numpy as np
 from django.core.cache import cache
 from .centralize import Centralized
 
