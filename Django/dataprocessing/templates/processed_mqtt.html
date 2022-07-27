@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="vis"></div>
+{% endblock %}
+    {% block javascript %}
+        <script rel="script" type="text/javascript" src="https://d3js.org/d3.v2.min.js"></script>
+        <script rel="script" type="text/javascript" src="{% static 'js/sine.js' %}"></script>
+    {% endblock %}

@@ -11,14 +11,14 @@ make sure uacpp server is installed and running and the mysql server user and da
 cd .\webframework_wenfengyang\django_cms
 virtualenv -p python3 venv
 .\venv\Scripts\activate.bat
-pip install -r requirements.txt
+pip install -r requirements_origin.txt
 ```
 # Setup on Linux
 ```bash
 cd .\webframework_wenfengyang\django_cms
 virtualenv -p python3 venv
 source venv/bin/activate
-pip install -U -r requirements.txt
+pip install -U -r requirements_origin.txt
 ```
 # Run it:
 
