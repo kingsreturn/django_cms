@@ -50,10 +50,7 @@ steps:
     testResultsFiles: "**/TEST-*.xml"
     testRunTitle: 'Python $(PYTHON_VERSION)'
   condition: succeededOrFailed()
-
-- task: DockerCompose@0
+- task: ContainerBuild@0
   inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/docker-compose.yml'
-    action: 'Run a Docker Compose command'
-    dockerComposeCommand: up
+    Dockerfile: 'Dockerfile'
+    buildContext: docker build -t wenfeng/condition_monitoring:v2 .
