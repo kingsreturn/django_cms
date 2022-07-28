@@ -1,4 +1,4 @@
-import numpy as np
+#import numpy as np
 from .Influxdb import Influxdb
 
 
@@ -8,10 +8,11 @@ class Centralized():
         self.y_name=y_name
 
     def Average(self, dataset):
-        return np.average(dataset, axis=0)
+        return sum(dataset) / len(dataset)
+        #return np.average(dataset, axis=0)
 
     def GenerateProcessedData(self):
-        average = np.average(self.y_dataset, axis=0)
+        average = sum(self.y_dataset) / len(self.y_dataset)#np.average(self.y_dataset, axis=0)
         for i in range(len(self.y_dataset)):
             self.y_dataset[i] -= average
         return self.y_dataset

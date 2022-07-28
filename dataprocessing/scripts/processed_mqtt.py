@@ -5,7 +5,7 @@ from django_plotly_dash import DjangoDash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from dash import Dash
-import numpy as np
+#import numpy as np
 from django.core.cache import cache
 from .centralize import Centralized
 
@@ -62,7 +62,8 @@ def update_graph_live(n):
 
     data['Drehmoment'] = origin_sin.GenerateProcessedData()
     data['Position'] = origin_cos.GenerateProcessedData()
-    data['time'] = np.linspace(0, 10, 100)
+    data['time'] = [x * 0.1 for x in range(0, 100)]
+        #np.linspace(0, 10, 100)
 
     # Create the graph with subplots
     fig = make_subplots(
