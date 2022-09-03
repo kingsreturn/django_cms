@@ -15,4 +15,4 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     MyTestCase.test_should_create_Dataquelle()
-    #unittest.main()
+
